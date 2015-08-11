@@ -20,12 +20,13 @@ class Game:
         stateleft = 0
         stateup = 0
         statedown = 0
-        ladderstate = 0;
+        ladderstate = 0
+        jumpstate = 0
         while 1:
 
             ladderstate = board1.getLadderCollisions()
             board1.getCoinCollisions()
-            self.clock.tick(30)
+            self.clock.tick(100)
             pygame.key.set_repeat()
             for ev in pygame.event.get():
                 if not hasattr(ev, 'key'): continue
@@ -45,12 +46,24 @@ class Game:
                         statedown = 1
                 if ev.type == KEYUP and ev.key == K_DOWN:
                         statedown = 0
+                if ev.type == KEYDOWN and ev.key == K_SPACE:
+                        jumpstate = 1
+
 
             if stateright == 1 : board1.key_pressed(1)
             if stateleft == 1 : board1.key_pressed(2)
             if stateup == 1 and ladderstate == 1 : board1.key_pressed(3)
             if statedown == 1 and ladderstate == 1 : board1.key_pressed(4)
-            if ladderstate == 0 :
+            if ladderstate == 1 and jumpstate == 1: jumpstate = 0
+            if jumpstate == 1:
+               if board1.playerjump() == 1:
+                   jumpstate =2
+
+            if jumpstate ==2:
+                if board1.playerjumpdown() == 1:
+                    jumpstate=0
+
+            if ladderstate == 0 and jumpstate ==0:
                 board1.dropplayer()
             self.screen.blit(self.background, self.background.get_rect())
             board1.update(self.screen)
