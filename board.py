@@ -56,8 +56,8 @@ class Board():
                         ladder.Ladder("ladder_broken.png", "ladder_broken.png", (300, 75), 30, 35),
                         ladder.Ladder("ladder_broken_down.png", "ladder_broken_down.png", (300, 140), 30, 35),
                         ]
-        self.ladderlimits = {(800,399):460,(300,319):380,(500,239):300,(900,159):140,(600,79):60,
-                             (650,380):380,(850,300):300,(300,140):140}
+        self.ladderlimits = {(800,399):460,(300,319):380,(500,239):300,(900,159):220,(600,79):140,
+                             (650,380):380,(850,300):300,(300,140):140,(650,315):380,(850,235):300,(300,75):140}
         self.ladder_group = pygame.sprite.RenderPlain(*self.ladders)
         self.ladder_group.draw(screen)
 
