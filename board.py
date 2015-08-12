@@ -14,6 +14,7 @@ class Board():
         self.ladders = []
         self.coins = []
         self.levellimits = {}
+        self.ladderlimits = {}
         self.block_group = pygame.sprite.RenderPlain(*(self.blocks))
         self.ladder_group = pygame.sprite.RenderPlain(*(self.ladders))
         self.coin_group = pygame.sprite.RenderPlain(*self.coins)
@@ -55,6 +56,8 @@ class Board():
                         ladder.Ladder("ladder_broken.png", "ladder_broken.png", (300, 75), 30, 35),
                         ladder.Ladder("ladder_broken_down.png", "ladder_broken_down.png", (300, 140), 30, 35),
                         ]
+        self.ladderlimits = {(800,399):460,(300,319):380,(500,239):300,(900,159):140,(600,79):60,
+                             (650,380):380,(850,300):300,(300,140):140}
         self.ladder_group = pygame.sprite.RenderPlain(*self.ladders)
         self.ladder_group.draw(screen)
 
@@ -71,11 +74,15 @@ class Board():
         if event == 1:
             x += 10
         if event == 2:
+
             x -= 10
+            print x
         if event == 3:
-            y -= 10
+            y -= 5
         if event == 4:
             y += 10
+            print y
+
         x = max(x, 0)
         y = max(y, 0)
         x = min(x, 1170)
@@ -168,6 +175,23 @@ class Board():
             self.plr_group = pygame.sprite.RenderPlain(*self.plr)
             return 0
 
+    def checkplayerlevel(self):
+        state = 0
+        x, y = self.plr[0].getPosition()
+        for s in self.ladder_group.sprites():
+            rect1 = self.plr[0].rect
+            rect1.topleft = self.plr[0].getPosition()
+            rect1.height = rect1.width = 20
+            rect2 = s.rect
+            rect2.height = 95
+            rect2.width = 30
+            if rect2.topleft in [(650, 315), (650, 380), (850, 235), (850, 300), (300, 75), (300, 140)]:
+                rect2.height = 35
+            if rect1.colliderect(rect2):
+                y=min(y,self.ladderlimits[rect2.topleft])
+                self.plr[0] = player.Player("coin.png", "coin.png", (x, y), 20, 20)
+                self.plr_group = pygame.sprite.RenderPlain(*self.plr)
+                break
 
 
 

@@ -49,11 +49,14 @@ class Game:
                 if ev.type == KEYDOWN and ev.key == K_SPACE:
                         jumpstate = 1
 
-
-            if stateright == 1 : board1.key_pressed(1)
-            if stateleft == 1 : board1.key_pressed(2)
             if stateup == 1 and ladderstate == 1 : board1.key_pressed(3)
             if statedown == 1 and ladderstate == 1 : board1.key_pressed(4)
+            if ladderstate == 1:
+                print board1.plr[0].getPosition()
+                board1.checkplayerlevel()
+            if stateright == 1 : board1.key_pressed(1)
+            if stateleft == 1 : board1.key_pressed(2)
+
             if ladderstate == 1 and jumpstate == 1: jumpstate = 0
             if jumpstate == 1:
                if board1.playerjump() == 1:
@@ -63,8 +66,12 @@ class Game:
                 if board1.playerjumpdown() == 1:
                     jumpstate=0
 
+
+
             if ladderstate == 0 and jumpstate ==0:
                 board1.dropplayer()
+
+
             self.screen.blit(self.background, self.background.get_rect())
             board1.update(self.screen)
             pygame.display.flip()
