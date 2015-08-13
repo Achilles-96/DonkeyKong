@@ -5,6 +5,7 @@ import princess
 import donkey
 import block, fireball, coin, ladder
 from random import randint
+import random
 from pygame.locals import *
 
 
@@ -23,7 +24,7 @@ class Board():
         self.initlogs(screen)
         self.initladders(screen)
         self.initcoins(screen)
-        self.plr = [player.Player("coin.png", "coin.png", (0, 450), 20, 20)]
+        self.plr = [player.Player("coin.png", "coin.png", (0, 450), 20, 20,0)]
         # print self.plr[0].getPosition()
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
         self.plr_group.draw(screen)
@@ -35,9 +36,9 @@ class Board():
                 self.playerparentdict[i]=i
             else:
                 self.playerparentdict[i]=self.playerparentdict[i+1]
-        self.fireballparentdict[500]=455
+        self.fireballparentdict[500]=460
         for i in range (499,0,-1):
-            if(i in [455, 375, 295, 215, 135, 55]):
+            if(i in [460, 380, 300, 220, 140, 60]):
                 self.fireballparentdict[i]=i
             else:
                 self.fireballparentdict[i]=self.fireballparentdict[i+1]
@@ -80,22 +81,39 @@ class Board():
 
     def initcoins(self, screen):  # Intialize all coins
         xlis = [450, 370, 290, 210, 130, 50]
+        ''',430,350,270,190,110,30'''
         self.coins = []
+        x=0
         for i in range(0, 20):
-            x, y = randint(170, 1000), xlis[randint(0, 5)]
+            y =  xlis[randint(0, 5)]
+            if y == 450 or y == 430:
+
+                x= random.randrange(0,1170,1)
+                print 0,1170,x,y
+            elif y in [370,210,50,350,190,30]:
+
+                x=random.randrange(0,1000,1)
+                print 0,1000,x,y
+            elif y in [290,130,270,110]:
+
+                x=random.randrange(200,1170,1)
+                print 200,1170,x,y
             self.coins += [coin.Coin("coin.png", "coin.png", (x, y), 30, 30)]
         self.coin_group = pygame.sprite.RenderPlain(*self.coins)
         self.coin_group.draw(screen)
 
     def createfireball(self):  # Creating fireballs
-        self.fireballs += [fireball.Fireball("coin.png", "coin.png", (30, 55), 25, 25, randint(1, 2))]
+        self.fireballs += [fireball.Fireball("coin.png", "coin.png", (30, 60), 20, 20, randint(1, 2))]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
 
     def key_pressed(self, event):  # Handling a key pressed event
         x, y = self.plr[0].getPosition()
+        state =0
         if event == 1:
+            state =0
             x += 10
         if event == 2:
+            state =1
             x -= 10
 
         if event == 3:
@@ -112,7 +130,7 @@ class Board():
         if (y in self.levellimits and int(self.levellimits[y]) == 2 and x < 170):
             y += 1
         # print x, y
-        self.plr[0] = player.Player("coin.png", "coin.png", (x, y), 20, 20)
+        self.plr[0] = player.Player("player2.png", "player.png", (x, y), 20, 20,state)
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
 
     def update(self, screen):  # Update the board
@@ -154,18 +172,19 @@ class Board():
             rect2.height = 25
             rect2.width = 25
             if rect1.colliderect(rect2):
-                # print "gone"
+                print "gone"
                 state = 1
                 break
 
     def dropplayer(self):  # Drop if player is in middle of air
         x, y = self.plr[0].getPosition()
+        state = self.plr[0].getState()
         levelpos = y
         levelpos = self.playerparentdict[levelpos]
         #print levelpos
         if y == levelpos:
             return
-        self.plr[0] = player.Player("coin.png", "coin.png", (x, min(y + 10, levelpos)), 20, 20)
+        self.plr[0] = player.Player("player2.png", "player.png", (x, min(y + 10, levelpos)), 20, 20,state)
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
 
     def getCoinCollisions(self):  # Checking collisions with any coin
@@ -181,36 +200,39 @@ class Board():
 
     def playerjump(self):  # Jumping up function
         x, y = self.plr[0].getPosition()
+        state = self.plr[0].getState()
         levelpos = y
         levelpos = self.playerparentdict[levelpos]
         # print levelpos,y
-        if y <= levelpos - 25:
-            self.plr[0] = player.Player("coin.png", "coin.png", (x, levelpos - 25), 20, 20)
+        if y <= levelpos - 30:
+            self.plr[0] = player.Player("player2.png", "player.png", (x, levelpos - 30), 20, 20,state )
             self.plr_group = pygame.sprite.RenderPlain(*self.plr)
             return 1
         else:
             # print "hi"
-            self.plr[0] = player.Player("coin.png", "coin.png", (x, y - 5), 20, 20)
+            self.plr[0] = player.Player("player2.png", "player.png", (x, y - 5), 20, 20,state)
             self.plr_group = pygame.sprite.RenderPlain(*self.plr)
             return 0
 
     def playerjumpdown(self):  # Jumping down function
         x, y = self.plr[0].getPosition()
+        state = self.plr[0].getState()
         levelpos = y
         levelpos=self.playerparentdict[levelpos]
         # print levelpos,y
         if y >= levelpos:
-            self.plr[0] = player.Player("coin.png", "coin.png", (x, levelpos), 20, 20)
+            self.plr[0] = player.Player("player2.png", "player.png", (x, levelpos), 20, 20,state )
             self.plr_group = pygame.sprite.RenderPlain(*self.plr)
             return 1
         else:
-            self.plr[0] = player.Player("coin.png", "coin.png", (x, y + 5), 20, 20)
+            self.plr[0] = player.Player("player2.png", "player.png", (x, y + 5), 20, 20,state)
             self.plr_group = pygame.sprite.RenderPlain(*self.plr)
             return 0
 
     def checkplayerlevel(self):  # chaecks that player should not fall down beyond ladder through a block
         state = 0
         x, y = self.plr[0].getPosition()
+        state = self.plr[0].getState()
         for s in self.ladder_group.sprites():
             rect1 = self.plr[0].rect
             rect1.topleft = self.plr[0].getPosition()
@@ -222,7 +244,7 @@ class Board():
                 rect2.height = 35
             if rect1.colliderect(rect2):
                 y = min(y, self.ladderlimits[rect2.topleft])
-                self.plr[0] = player.Player("coin.png", "coin.png", (x, y), 20, 20)
+                self.plr[0] = player.Player("player2.png", "player.png", (x, y), 20, 20,state)
                 self.plr_group = pygame.sprite.RenderPlain(*self.plr)
                 break
 
@@ -233,7 +255,7 @@ class Board():
         for s in self.fireball_group.sprites():
             x, y = s.getPosition()
            # else:
-            if x<=0 and y == 455:
+            if x<=0 and y == 460:
                 print "kill me"
                 pass
             else:
@@ -245,15 +267,16 @@ class Board():
                 else:
                     x -= 10
             #print y, self.levellimits
-                if (y + 5 in self.levellimits and int(self.levellimits[y + 5]) == 1 and x > 1000):
+                if (y  in self.levellimits and int(self.levellimits[y ]) == 1 and x > 1000):
                     y += 1
                     y = self.fireballparentdict[y]
                     state = randint(1, 2)
-                if (y + 5 in self.levellimits and int(self.levellimits[y + 5]) == 2 and x < 170):
+                if (y  in self.levellimits and int(self.levellimits[y ]) == 2 and x < 170):
                     y += 1
                     y = self.fireballparentdict[y]
                     state = randint(1, 2)
-                self.fireballs[i] = [fireball.Fireball("coin.png", "coin.png", (x, y), 25, 25, state)]
+                self.fireballs[i] = fireball.Fireball("fireball.png", "fireball.png", (x, y), 20, 20, state)
+                #if state == 2: pygame.transform.flip(self.fireballs[i],True,False)
                 i += 1
         del self.fireballs[i:]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)

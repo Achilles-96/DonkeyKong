@@ -5,10 +5,11 @@ import person
 
 class Player(person.PersonSprite):
 
-    def __init__(self, image_normal, image_hit, position, width, height):
-        person.PersonSprite.__init__(self, image_normal, image_hit, position, width, height)
+    def __init__(self, image_normal, image_hit, position, width, height,state):
+        person.PersonSprite.__init__(self, image_normal, image_hit, position, width, height,state)
         self.score = 0
         self.lives = 3
+
 
     def getPosition(self):
         return self.position
@@ -18,3 +19,6 @@ class Player(person.PersonSprite):
 
     def collectCoin(self):
         self.score += 5
+
+    def getState(self):
+        return self.state
