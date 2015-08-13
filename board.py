@@ -162,7 +162,7 @@ class Board():
         x, y = self.plr[0].getPosition()
         levelpos = y
         levelpos = self.playerparentdict[levelpos]
-        print levelpos
+        #print levelpos
         if y == levelpos:
             return
         self.plr[0] = player.Player("coin.png", "coin.png", (x, min(y + 10, levelpos)), 20, 20)
@@ -227,25 +227,33 @@ class Board():
                 break
 
     def updatefireballs(self):
-        i = 0
+
+
+        i=0
         for s in self.fireball_group.sprites():
             x, y = s.getPosition()
-            state = s.getState()
-            if x <= 0: state = 1
-            if x >= 1200: state = 2
-            if state == 1:
-                x += 10
+           # else:
+            if x<=0 and y == 455:
+                print "kill me"
+                pass
             else:
-                x -= 10
+                state = s.getState()
+                if x <= 0: state = 1
+                if x >= 1200: state = 2
+                if state == 1:
+                    x += 10
+                else:
+                    x -= 10
             #print y, self.levellimits
-            if (y + 5 in self.levellimits and int(self.levellimits[y + 5]) == 1 and x > 1000):
-                y += 1
-                y = self.fireballparentdict[y]
-                state = randint(1, 2)
-            if (y + 5 in self.levellimits and int(self.levellimits[y + 5]) == 2 and x < 170):
-                y += 1
-                y = self.fireballparentdict[y]
-                state = randint(1, 2)
-            self.fireballs[i] = [fireball.Fireball("coin.png", "coin.png", (x, y), 25, 25, state)]
-            self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
-            i += 1
+                if (y + 5 in self.levellimits and int(self.levellimits[y + 5]) == 1 and x > 1000):
+                    y += 1
+                    y = self.fireballparentdict[y]
+                    state = randint(1, 2)
+                if (y + 5 in self.levellimits and int(self.levellimits[y + 5]) == 2 and x < 170):
+                    y += 1
+                    y = self.fireballparentdict[y]
+                    state = randint(1, 2)
+                self.fireballs[i] = [fireball.Fireball("coin.png", "coin.png", (x, y), 25, 25, state)]
+                i += 1
+        del self.fireballs[i:]
+        self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)

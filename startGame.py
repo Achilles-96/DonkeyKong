@@ -24,11 +24,13 @@ class Game:
         ladderstate = 0
         jumpstate = 0
         timer = 0
+        lim =randint(180,210)
         while 1:
             # print timer
-            if timer == 200:
+            if timer == lim:
                 board1.createfireball()
                 timer = 0
+                lim = randint(180,200)
             timer += 1
             ladderstate = board1.getLadderCollisions()
             board1.getCoinCollisions()
@@ -63,7 +65,7 @@ class Game:
                 board1.key_pressed(4)
                 board1.checkfireballcollision()
             if ladderstate == 1:
-                print board1.plr[0].getPosition()
+                #print board1.plr[0].getPosition()
                 board1.checkplayerlevel()
                 board1.checkfireballcollision()
             if stateright == 1:
