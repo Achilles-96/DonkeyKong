@@ -24,7 +24,7 @@ class Game:
         ladderstate = 0
         jumpstate = 0
         timer = 0
-        lim =randint(180,210)
+        lim =randint(100,120)
         while 1:
             # print timer
             if timer == lim:
@@ -34,7 +34,7 @@ class Game:
             timer += 1
             ladderstate = board1.getLadderCollisions()
             board1.getCoinCollisions()
-            self.clock.tick(100)
+            self.clock.tick(30)
             pygame.key.set_repeat()
             for ev in pygame.event.get():
                 if not hasattr(ev, 'key'): continue
