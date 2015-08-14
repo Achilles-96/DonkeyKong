@@ -5,11 +5,12 @@ from pygame.locals import *
 from random import randint
 
 
+
 class Game:
     def __init__(self, background):
-        self.screen = pygame.display.set_mode((1200, 500))
+        self.screen = pygame.display.set_mode((1200, 500),DOUBLEBUF)
+        self.screen.set_alpha(None)
         self.clock = pygame.time.Clock()
-        # pygame.draw.rect(self.screen,(0,0,0),(300,315,30,90))
         self.background = pygame.image.load(background)
         self.background = pygame.transform.scale(self.background, (1200, 500))
         self.screen.blit(self.background, self.background.get_rect())
@@ -24,13 +25,14 @@ class Game:
         ladderstate = 0
         jumpstate = 0
         timer = 0
-        lim =randint(100,120)
+        donkeytimer = 0
+        lim =randint(50,70)
         while 1:
-            # print timer
+            self.screen.set_alpha(None)
             if timer == lim:
                 board1.createfireball()
                 timer = 0
-                lim = randint(180,200)
+                lim = randint(50,70)
             timer += 1
             ladderstate = board1.getLadderCollisions()
             board1.getCoinCollisions()
@@ -56,7 +58,12 @@ class Game:
                     statedown = 0
                 if ev.type == KEYDOWN and ev.key == K_SPACE:
                     jumpstate = 1
-            board1.updatefireballs()
+            donkeytimer += 1
+            if donkeytimer == 10:
+                donkeytimer = 0
+                board1.updatefireballs(1)
+            else:
+                board1.updatefireballs(0)
             if stateup == 1 and ladderstate == 1:
                 board1.key_pressed(3)
                 board1.checkfireballcollision()
@@ -65,7 +72,6 @@ class Game:
                 board1.key_pressed(4)
                 board1.checkfireballcollision()
             if ladderstate == 1:
-                #print board1.plr[0].getPosition()
                 board1.checkplayerlevel()
                 board1.checkfireballcollision()
             if stateright == 1:
@@ -96,5 +102,5 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game('background.png')
+    game = Game('background.jpg')
     game.run()

@@ -25,7 +25,6 @@ class Board():
         self.initladders(screen)
         self.initcoins(screen)
         self.plr = [player.Player("coin.png", "coin.png", (0, 450), 20, 20,0)]
-        # print self.plr[0].getPosition()
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
         self.plr_group.draw(screen)
         self.playerparentdict ={}
@@ -58,6 +57,9 @@ class Board():
                        block.Block("log.png", "log.png", (0, 480), 1200, 20), ]
         self.block_group = pygame.sprite.RenderPlain(*self.blocks)
         self.block_group.draw(screen)
+        self.donkey = donkey.Donkey("Donkey.png","Donkey.png",(20,30),40,50,0)
+        self.donkey_group = pygame.sprite.RenderPlain(self.donkey)
+
 
     def initladders(self, screen):  # Intialize all ladders
 
@@ -131,6 +133,7 @@ class Board():
         self.ladder_group.draw(screen)
         self.plr_group.draw(screen)
         self.fireball_group.draw(screen)
+        self.donkey_group.draw(screen)
 
     def getLadderCollisions(self):  # Check if player is in touch with any ladder
 
@@ -162,7 +165,6 @@ class Board():
             rect2.height = 25
             rect2.width = 25
             if rect1.colliderect(rect2):
-                print "gone"
                 state = 1
                 break
 
@@ -197,7 +199,7 @@ class Board():
             self.plr_group = pygame.sprite.RenderPlain(*self.plr)
             return 1
         else:
-            self.plr[0] = player.Player("player2.png", "player.png", (x, y - 10), 20, 20,state)
+            self.plr[0] = player.Player("player2.png", "player.png", (x, y - 5), 20, 20,state)
             self.plr_group = pygame.sprite.RenderPlain(*self.plr)
             return 0
 
@@ -206,13 +208,12 @@ class Board():
         state = self.plr[0].getState()
         levelpos = y
         levelpos=self.playerparentdict[levelpos]
-        # print levelpos,y
         if y >= levelpos:
             self.plr[0] = player.Player("player2.png", "player.png", (x, levelpos), 20, 20,state )
             self.plr_group = pygame.sprite.RenderPlain(*self.plr)
             return 1
         else:
-            self.plr[0] = player.Player("player2.png", "player.png", (x, y + 10), 20, 20,state)
+            self.plr[0] = player.Player("player2.png", "player.png", (x, y + 5), 20, 20,state)
             self.plr_group = pygame.sprite.RenderPlain(*self.plr)
             return 0
 
@@ -234,29 +235,28 @@ class Board():
                 self.plr_group = pygame.sprite.RenderPlain(*self.plr)
                 break
 
-    def updatefireballs(self):
+    def updatefireballs(self,flipdonkey):
         i=0
         for s in self.fireball_group.sprites():
             x, y = s.getPosition()
             if x<=0 and y == 460:
-                print "kill me"
                 pass
             else:
                 state = s.getState()
                 if x <= 0: state = 1
                 if x >= 1200: state = 2
                 if state == 1:
-                    x += 10
+                    x += 5
                 else:
-                    x -= 10
+                    x -= 5
                 collisions = pygame.sprite.spritecollide(s,self.ladder_group,False)
                 if collisions:
                     ly =self.ladderlimits[collisions[0].rect.topleft]
-                    print "touched",y,ly
                     if y != ly:
                         val = randint(1,5)
-                        print val
-                        if val == 5: y+=1
+                        if val == 5:
+                            y+=1
+                            state = randint(0,1)
                         y = self.fireballparentdict[y]
                 if (y  in self.levellimits and int(self.levellimits[y]) == 1 and x > 1000):
                     y += 1
@@ -270,3 +270,5 @@ class Board():
                 i += 1
         del self.fireballs[i:]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
+        self.donkey = donkey.Donkey("Donkey.png","Donkey2.png",(20,30),40,50,flipdonkey^(self.donkey.getState()))
+        self.donkey_group = pygame.sprite.RenderPlain(self.donkey)
