@@ -1,5 +1,6 @@
 __author__ = 'raghuram'
 import gameobject
+import pygame
 
 
 class Fireball(gameobject.GameObject):
@@ -12,3 +13,10 @@ class Fireball(gameobject.GameObject):
 
     def getState(self):
         return self.state
+
+    def setPosition(self,position):
+        self.position = position
+        pygame.Rect(self.image.get_rect()).topleft = position
+
+    def setState(self,state):
+        self.state = state

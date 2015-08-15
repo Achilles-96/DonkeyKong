@@ -45,7 +45,7 @@ class Board():
     def initlogs(self, screen):  # Intialize all blocks
         self.levellimits = {380: 1, 300: 2, 220: 1, 140: 2, 60: 1}
         self.blocks = [block.Block("log.png", "log.png", (0, 0), 1200, 20),
-                       block.Block("log.png", "log.png", (0, 80), 1000, 20),
+                       block.Block("log.png", "log.png", (0, 80), 700, 20),
                        block.Block("log.png", "log.png", (200, 160), 1000, 20),
                        block.Block("log.png", "log.png", (0, 240), 1000, 20),
                        block.Block("log.png", "log.png", (200, 320), 1000, 20),
@@ -85,9 +85,10 @@ class Board():
             y =  xlis[randint(0, 5)]
             if y == 450 or y == 430:
                 x= random.randrange(0,1170,1)
-            elif y in [370,210,50,350,190,30]:
+            elif y in [370,210,350,190,30]:
                 x=random.randrange(0,1000,1)
             elif y in [290,130,270,110]:  x=random.randrange(200,1170,1)
+            elif y == 50: x=random.randrange(0,700)
 
             self.coins += [coin.Coin("coin.png", "coin.png", (x, y), 20, 20)]
 
@@ -115,6 +116,8 @@ class Board():
         y = max(y, 0)
         x = min(x, 1170)
         y = min(y, 460)
+        if y == 80 and x>700 :
+            y+=1
         if (y in self.levellimits and int(self.levellimits[y]) == 1 and x > 1000):
             y += 1
         if (y in self.levellimits and int(self.levellimits[y]) == 2 and x < 170):
@@ -241,27 +244,32 @@ class Board():
                 state = s.getState()
                 if x <= 0: state = 1
                 if x >= 1200: state = 2
-                if state == 1:
-                    x += 5
+                if state != 3:
+                    if state == 1:
+                        x += 5
+                    else:
+                        x -= 5
+                    collisions = pygame.sprite.spritecollide(s,self.ladder_group,False)
+                    if collisions:
+                        ly =self.ladderlimits[collisions[0].rect.topleft]
+                        if y != ly:
+                            val = randint(1,5)
+                            if val == 5:
+                                y+=10
+                                state = 3
+                            #y = self.fireballparentdict[y]
+                    if (y  in self.levellimits and int(self.levellimits[y]) == 1 and x > 1000):
+                        y += 10
+                        #y = self.fireballparentdict[y]
+                        state = 3
+                    if (y  in self.levellimits and int(self.levellimits[y]) == 2 and x < 170):
+                        y += 10
+                        #y = self.fireballparentdict[y]
+                        state = 3
                 else:
-                    x -= 5
-                collisions = pygame.sprite.spritecollide(s,self.ladder_group,False)
-                if collisions:
-                    ly =self.ladderlimits[collisions[0].rect.topleft]
-                    if y != ly:
-                        val = randint(1,5)
-                        if val == 5:
-                            y+=1
-                            state = randint(0,1)
-                        y = self.fireballparentdict[y]
-                if (y  in self.levellimits and int(self.levellimits[y]) == 1 and x > 1000):
-                    y += 1
-                    y = self.fireballparentdict[y]
-                    state = randint(1, 2)
-                if (y  in self.levellimits and int(self.levellimits[y]) == 2 and x < 170):
-                    y += 1
-                    y = self.fireballparentdict[y]
-                    state = randint(1, 2)
+                    y=min(self.fireballparentdict[y],y+10)
+                    if self.fireballparentdict[y] == y:
+                        state=randint(0,1)
                 self.fireballs[i] = fireball.Fireball("fireball.png", "fireball.png", (x, y), 20, 20, state)
                 i += 1
         del self.fireballs[i:]
