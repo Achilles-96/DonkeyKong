@@ -172,6 +172,7 @@ class Board():
                 else:
                     self.plr[0].setPosition((0,450))
                     self.plr[0].setState(0)
+                    self.plr[0].setLives(self.plr[0].getLives()-1)
                     return 1
         return -1
 
@@ -243,7 +244,7 @@ class Board():
             else:
                 state = s.getState()
                 if x <= 0: state = 1
-                if x >= 1200: state = 2
+                if x >= 1180: state = 2
                 if state != 3:
                     if state == 1:
                         x += 5
@@ -253,18 +254,18 @@ class Board():
                     if collisions:
                         ly =self.ladderlimits[collisions[0].rect.topleft]
                         if y != ly:
-                            val = randint(1,5)
+                            val = randint(1,10)
                             if val == 5:
                                 y+=10
                                 state = 3
-                            #y = self.fireballparentdict[y]
+                    if y == 60 and x>700 :
+                        y+=10
+                        state = 3
                     if (y  in self.levellimits and int(self.levellimits[y]) == 1 and x > 1000):
                         y += 10
-                        #y = self.fireballparentdict[y]
                         state = 3
                     if (y  in self.levellimits and int(self.levellimits[y]) == 2 and x < 170):
                         y += 10
-                        #y = self.fireballparentdict[y]
                         state = 3
                 else:
                     y=min(self.fireballparentdict[y],y+10)
@@ -282,3 +283,6 @@ class Board():
 
     def setPlayerScore(self,newscore):
         self.plr[0].setScore(newscore)
+
+    def getPlayerLives(self):
+        return self.plr[0].getLives()

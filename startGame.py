@@ -10,11 +10,11 @@ import scoreboard
 class Game:
     def __init__(self, background):
         pygame.font.init()
-        self.screen = pygame.display.set_mode((1200, 500),DOUBLEBUF)
+        self.screen = pygame.display.set_mode((1200, 600),DOUBLEBUF)
         self.screen.set_alpha(None)
         self.clock = pygame.time.Clock()
         self.background = pygame.image.load(background)
-        self.background = pygame.transform.scale(self.background, (1200, 500))
+        self.background = pygame.transform.scale(self.background, (1200, 600))
         self.screen.blit(self.background, self.background.get_rect())
         pygame.display.flip()
 
@@ -30,6 +30,7 @@ class Game:
         jumpspeed = 0
         donkeytimer = 0
         lim =randint(50,70)
+        scoreboard1 = scoreboard.ScoreBoard("scoreboard.png",board1.getPlayerScore(),self.screen,"liveplayer.png")
         while 1:
             self.screen.set_alpha(None)
             if timer == lim:
@@ -99,10 +100,12 @@ class Game:
                     jumpspeed = 0
                 else:
                     jumpspeed -= 2
+
                 if board1.checkfireballcollision() == 0:
                     break
                 elif board1.checkfireballcollision() == 1:
                     jumpstate = 0
+                    jumpspeed = 0
 
             if jumpstate == 2:
                 if board1.playerjumpdown(jumpspeed) == 1:
@@ -110,10 +113,12 @@ class Game:
                     jumpspeed = 10
                 else:
                     jumpspeed += 2
+
                 if board1.checkfireballcollision() == 0:
                     break
                 elif board1.checkfireballcollision() == 1:
                     jumpstate = 0
+                    jumpspeed = 0
 
             if ladderstate == 0 and jumpstate == 0:
                 board1.dropplayer()
@@ -123,7 +128,8 @@ class Game:
             self.screen.blit(self.background, self.background.get_rect())
             board1.update(self.screen)
             board1.setPlayerScore(prevScore+collectCoin*5)
-            scoreboard.ScoreBoard("scoreboard.png",board1.getPlayerScore(),self.screen)
+            scoreboard1.update(board1.getPlayerScore(),self.screen)
+            scoreboard1.update_lives(self.screen,board1.getPlayerLives())
             pygame.display.flip()
 
 
