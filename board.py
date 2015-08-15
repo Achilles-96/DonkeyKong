@@ -156,7 +156,7 @@ class Board():
         else:
             return 0
 
-    def checkfireballcollision(self):
+    def checkfireballcollision(self):  #Check if player is dead and respawn
         state = 0
         for s in self.fireball_group.sprites():
             rect1 = self.plr[0].rect
@@ -196,7 +196,8 @@ class Board():
             rect2.height = rect2.width = 30
             if rect1.colliderect(rect2):
                 c.kill()
-                self.plr[0].collectCoin()
+                return 1
+        return 0
 
     def playerjump(self):  # Jumping up function
         x, y = self.plr[0].getPosition()
@@ -247,7 +248,7 @@ class Board():
                 self.plr_group = pygame.sprite.RenderPlain(*self.plr)
                 break
 
-    def updatefireballs(self,flipdonkey):
+    def updatefireballs(self,flipdonkey):  #Update fireball positions
         i=0
         for s in self.fireball_group.sprites():
             x, y = s.getPosition()
@@ -284,3 +285,9 @@ class Board():
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
         self.donkey = donkey.Donkey("Donkey.png","Donkey2.png",(20,30),40,50,flipdonkey^(self.donkey.getState()))
         self.donkey_group = pygame.sprite.RenderPlain(self.donkey)
+
+    def getPlayerScore(self):
+        return self.plr[0].getScore()
+
+    def setPlayerScore(self,newscore):
+        self.plr[0].setScore(newscore)

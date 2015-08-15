@@ -17,11 +17,14 @@ class Player(person.PersonSprite):
     def setPosition(self,position):
         pygame.Rect(self.image.get_rect()).topleft = position
 
-    def collectCoin(self):
-        self.score += 5
+    def setScore(self,newScore):
+        self.score = newScore
 
     def getState(self):
         return self.state
 
     def getLives(self):
         return self.lives
+
+    def getScore(self):
+        return self.score

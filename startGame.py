@@ -3,11 +3,13 @@ import pygame, math, sys
 import board
 from pygame.locals import *
 from random import randint
+import scoreboard
 
 
 
 class Game:
     def __init__(self, background):
+        pygame.font.init()
         self.screen = pygame.display.set_mode((1200, 500),DOUBLEBUF)
         self.screen.set_alpha(None)
         self.clock = pygame.time.Clock()
@@ -34,8 +36,9 @@ class Game:
                 timer = 0
                 lim = randint(50,70)
             timer += 1
+            prevScore = board1.getPlayerScore()
             ladderstate = board1.getLadderCollisions()
-            board1.getCoinCollisions()
+            collectCoin = board1.getCoinCollisions()
             self.clock.tick(30)
             pygame.key.set_repeat()
             for ev in pygame.event.get():
@@ -106,6 +109,8 @@ class Game:
 
             self.screen.blit(self.background, self.background.get_rect())
             board1.update(self.screen)
+            board1.setPlayerScore(prevScore+collectCoin*5)
+            scoreboard.ScoreBoard("scoreboard.png",board1.getPlayerScore(),self.screen)
             pygame.display.flip()
 
 
