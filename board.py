@@ -24,7 +24,7 @@ class Board():
         self.initlogs(screen)
         self.initladders(screen)
         self.initcoins(screen)
-        self.plr = [player.Player("coin.png", "coin.png", (0, 450), 20, 20,0)]
+        self.plr = [player.Player("coin.png", "coin.png", (0, 450), 20, 20,0,2)]
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
         self.plr_group.draw(screen)
         self.playerparentdict ={}
@@ -124,7 +124,8 @@ class Board():
             y += 1
         if (y in self.levellimits and int(self.levellimits[y]) == 2 and x < 170):
             y += 1
-        self.plr[0] = player.Player("player2.png", "player.png", (x, y), 20, 20,state)
+        lives = self.plr[0].getLives()
+        self.plr[0] = player.Player("player2.png", "player.png", (x, y), 20, 20,state,lives)
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
 
     def update(self, screen):  # Update the board
@@ -166,16 +167,24 @@ class Board():
             rect2.width = 25
             if rect1.colliderect(rect2):
                 state = 1
+                self.fireballs = []
+                self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
+                if self.plr[0].getLives() == 0:
+                    return 0
+                else:
+                    self.plr[0] = player.Player("player2.png", "player.png", (0,450), 20, 20,0,self.plr[0].getLives()-1)
+                    return 1
                 break
 
     def dropplayer(self):  # Drop if player is in middle of air
         x, y = self.plr[0].getPosition()
         state = self.plr[0].getState()
+        lives = self.plr[0].getLives()
         levelpos = y
         levelpos = self.playerparentdict[levelpos]
         if y == levelpos:
             return
-        self.plr[0] = player.Player("player2.png", "player.png", (x, min(y + 10, levelpos)), 20, 20,state)
+        self.plr[0] = player.Player("player2.png", "player.png", (x, min(y + 10, levelpos)), 20, 20,state,lives)
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
 
     def getCoinCollisions(self):  # Checking collisions with any coin
@@ -192,34 +201,37 @@ class Board():
     def playerjump(self):  # Jumping up function
         x, y = self.plr[0].getPosition()
         state = self.plr[0].getState()
+        lives = self.plr[0].getLives()
         levelpos = y
         levelpos = self.playerparentdict[levelpos]
         if y <= levelpos - 30:
-            self.plr[0] = player.Player("player2.png", "player.png", (x, levelpos - 30), 20, 20,state )
+            self.plr[0] = player.Player("player2.png", "player.png", (x, levelpos - 30), 20, 20,state,lives )
             self.plr_group = pygame.sprite.RenderPlain(*self.plr)
             return 1
         else:
-            self.plr[0] = player.Player("player2.png", "player.png", (x, y - 5), 20, 20,state)
+            self.plr[0] = player.Player("player2.png", "player.png", (x, y - 5), 20, 20,state,lives)
             self.plr_group = pygame.sprite.RenderPlain(*self.plr)
             return 0
 
     def playerjumpdown(self):  # Jumping down function
         x, y = self.plr[0].getPosition()
         state = self.plr[0].getState()
+        lives = self.plr[0].getLives()
         levelpos = y
         levelpos=self.playerparentdict[levelpos]
         if y >= levelpos:
-            self.plr[0] = player.Player("player2.png", "player.png", (x, levelpos), 20, 20,state )
+            self.plr[0] = player.Player("player2.png", "player.png", (x, levelpos), 20, 20,state,lives )
             self.plr_group = pygame.sprite.RenderPlain(*self.plr)
             return 1
         else:
-            self.plr[0] = player.Player("player2.png", "player.png", (x, y + 5), 20, 20,state)
+            self.plr[0] = player.Player("player2.png", "player.png", (x, y + 5), 20, 20,state,lives)
             self.plr_group = pygame.sprite.RenderPlain(*self.plr)
             return 0
 
     def checkplayerlevel(self):  # chaecks that player should not fall down beyond ladder through a block
         x, y = self.plr[0].getPosition()
         state = self.plr[0].getState()
+        lives = self.plr[0].getLives()
         for s in self.ladder_group.sprites():
             rect1 = self.plr[0].rect
             rect1.topleft = self.plr[0].getPosition()
@@ -231,7 +243,7 @@ class Board():
                 rect2.height = 35
             if rect1.colliderect(rect2):
                 y = min(y, self.ladderlimits[rect2.topleft])
-                self.plr[0] = player.Player("player2.png", "player.png", (x, y), 20, 20,state)
+                self.plr[0] = player.Player("player2.png", "player.png", (x, y), 20, 20,state,lives)
                 self.plr_group = pygame.sprite.RenderPlain(*self.plr)
                 break
 

@@ -66,35 +66,43 @@ class Game:
                 board1.updatefireballs(0)
             if stateup == 1 and ladderstate == 1:
                 board1.key_pressed(3)
-                board1.checkfireballcollision()
+                if board1.checkfireballcollision() == 0:
+                    break
 
             if statedown == 1 and ladderstate == 1:
                 board1.key_pressed(4)
-                board1.checkfireballcollision()
+                if board1.checkfireballcollision() == 0:
+                    break
             if ladderstate == 1:
                 board1.checkplayerlevel()
-                board1.checkfireballcollision()
+                if board1.checkfireballcollision() == 0:
+                    break
             if stateright == 1:
                 board1.key_pressed(1)
-                board1.checkfireballcollision()
+                if board1.checkfireballcollision() == 0:
+                    break
             if stateleft == 1:
                 board1.key_pressed(2)
-                board1.checkfireballcollision()
+                if board1.checkfireballcollision() == 0:
+                    break
 
             if ladderstate == 1 and jumpstate == 1: jumpstate = 0
             if jumpstate == 1:
                 if board1.playerjump() == 1:
                     jumpstate = 2
-                board1.checkfireballcollision()
+                if board1.checkfireballcollision() == 0:
+                    break
 
             if jumpstate == 2:
                 if board1.playerjumpdown() == 1:
                     jumpstate = 0
-                board1.checkfireballcollision()
+                if board1.checkfireballcollision() == 0:
+                    break
 
             if ladderstate == 0 and jumpstate == 0:
                 board1.dropplayer()
-                board1.checkfireballcollision()
+                if board1.checkfireballcollision() == 0:
+                    break
 
             self.screen.blit(self.background, self.background.get_rect())
             board1.update(self.screen)
@@ -102,5 +110,6 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game('background.jpg')
-    game.run()
+    while 1:
+        game = Game('background.jpg')
+        game.run()
