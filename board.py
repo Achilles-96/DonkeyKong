@@ -192,30 +192,27 @@ class Board():
                 return 1
         return 0
 
-    def playerjump(self):  # Jumping up function
+    def playerjump(self,jumpspeed):  # Jumping up function
         x, y = self.plr[0].getPosition()
-        state = self.plr[0].getState()
-        lives = self.plr[0].getLives()
         levelpos = y
         levelpos = self.playerparentdict[levelpos]
         if y <= levelpos - 30:
             self.plr[0].setPosition((x,levelpos-30))
             return 1
         else:
-            self.plr[0].setPosition((x,y-5))
+            print jumpspeed
+            self.plr[0].setPosition((x,y-jumpspeed))
             return 0
 
-    def playerjumpdown(self):  # Jumping down function
+    def playerjumpdown(self,jumpspeed):  # Jumping down function
         x, y = self.plr[0].getPosition()
-        state = self.plr[0].getState()
-        lives = self.plr[0].getLives()
         levelpos = y
         levelpos=self.playerparentdict[levelpos]
         if y >= levelpos:
             self.plr[0].setPosition((x,levelpos))
             return 1
         else:
-            self.plr[0].setPosition((x,y+5))
+            self.plr[0].setPosition((x,y+jumpspeed))
             return 0
 
     def checkplayerlevel(self):  # chaecks that player should not fall down beyond ladder through a block
@@ -269,7 +266,6 @@ class Board():
                 i += 1
         del self.fireballs[i:]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
-        print self.donkey.getState()
         self.donkey.setPosition((20,30))
         self.donkey.setState(self.donkey.getState()^flipdonkey)
 

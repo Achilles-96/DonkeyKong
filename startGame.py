@@ -27,6 +27,7 @@ class Game:
         ladderstate = 0
         jumpstate = 0
         timer = 0
+        jumpspeed = 0
         donkeytimer = 0
         lim =randint(50,70)
         while 1:
@@ -59,8 +60,10 @@ class Game:
                     statedown = 1
                 if ev.type == KEYUP and ev.key == K_DOWN:
                     statedown = 0
-                if ev.type == KEYDOWN and ev.key == K_SPACE:
+                if ev.type == KEYDOWN and ev.key == K_SPACE and jumpstate == 0:
                     jumpstate = 1
+                    jumpspeed = 10
+
             donkeytimer += 1
             if donkeytimer == 10:
                 donkeytimer = 0
@@ -91,14 +94,20 @@ class Game:
 
             if ladderstate == 1 and jumpstate == 1: jumpstate = 0
             if jumpstate == 1:
-                if board1.playerjump() == 1:
+                if board1.playerjump(jumpspeed) == 1:
                     jumpstate = 2
+                    jumpspeed = 0
+                else:
+                    jumpspeed -= 2
                 if board1.checkfireballcollision() == 0:
                     break
 
             if jumpstate == 2:
-                if board1.playerjumpdown() == 1:
+                if board1.playerjumpdown(jumpspeed) == 1:
                     jumpstate = 0
+                    jumpspeed = 10
+                else:
+                    jumpspeed += 2
                 if board1.checkfireballcollision() == 0:
                     break
 
