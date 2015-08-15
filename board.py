@@ -173,7 +173,7 @@ class Board():
                     self.plr[0].setPosition((0,450))
                     self.plr[0].setState(0)
                     return 1
-                break
+        return -1
 
     def dropplayer(self):  # Drop if player is in middle of air
         x, y = self.plr[0].getPosition()

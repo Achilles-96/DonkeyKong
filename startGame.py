@@ -101,6 +101,8 @@ class Game:
                     jumpspeed -= 2
                 if board1.checkfireballcollision() == 0:
                     break
+                elif board1.checkfireballcollision() == 1:
+                    jumpstate = 0
 
             if jumpstate == 2:
                 if board1.playerjumpdown(jumpspeed) == 1:
@@ -110,6 +112,8 @@ class Game:
                     jumpspeed += 2
                 if board1.checkfireballcollision() == 0:
                     break
+                elif board1.checkfireballcollision() == 1:
+                    jumpstate = 0
 
             if ladderstate == 0 and jumpstate == 0:
                 board1.dropplayer()
