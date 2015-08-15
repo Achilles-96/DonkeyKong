@@ -15,7 +15,18 @@ class Player(person.PersonSprite):
         return self.position
 
     def setPosition(self,position):
+        self.position = position
         pygame.Rect(self.image.get_rect()).topleft = position
+
+    def setState(self,state):
+        self.state=state
+        if state == 0:
+            self.image =self.left
+        else:
+            self.image =self.right
+
+    def setLives(self,lives):
+        self.lives =lives
 
     def setScore(self,newScore):
         self.score = newScore

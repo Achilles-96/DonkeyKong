@@ -13,12 +13,14 @@ class PersonSprite(pygame.sprite.Sprite):
 
         self.position = position
         self.state =state
-        # self.image = pygame.transform.scale(self.normal,(width*scale,height*scale))
         if state == 0:
             self.image =self.left
         else:
             self.image=self.right
-        self.image = pygame.transform.scale(self.image, (width, height))
+        self.left =pygame.transform.scale(self.left, (width, height))
+        self.right =pygame.transform.scale(self.right, (width, height))
+        #self.image = pygame.transform.scale(self.left, (width, height))
+        self.image=self.left
         self.rect = pygame.Rect(self.image.get_rect())
         self.rect.topleft = position
 
