@@ -9,11 +9,11 @@ import scoreboard
 class Game:
     def __init__(self, background):
         pygame.font.init()
-        self.screen = pygame.display.set_mode((1200, 600),DOUBLEBUF)
+        self.screen = pygame.display.set_mode((1200, 620),DOUBLEBUF)
         self.screen.set_alpha(None)
         self.clock = pygame.time.Clock()
         self.background = pygame.image.load(background)
-        self.background = pygame.transform.scale(self.background, (1200, 600))
+        self.background = pygame.transform.scale(self.background, (1200, 620))
         self.screen.blit(self.background, self.background.get_rect())
         pygame.display.flip()
 
@@ -37,7 +37,7 @@ class Game:
             if timer == lim:
                 board1.createfireball()
                 timer = 0
-                lim = randint(50,70)
+                lim = randint(80,100)
             timer += 1
             prevScore = board1.getPlayerScore()
             ladderstate = board1.getLadderCollisions()
@@ -155,6 +155,8 @@ class Game:
                     fireballhitme = 1
                     jumpstate = 0
 
+            if board1.checkwin() == 1:
+                break
             self.screen.blit(self.background, self.background.get_rect())
             board1.update(self.screen)
             board1.setPlayerScore(max(0,prevScore+collectCoin*5-fireballhitme*25))

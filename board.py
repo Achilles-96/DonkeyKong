@@ -15,95 +15,113 @@ class Board():
         self.ladders = []
         self.coins = []
         self.fireballs = []
+        self.castleblocks = []
         self.levellimits = {}
         self.ladderlimits = {}
         self.block_group = pygame.sprite.RenderPlain(*self.blocks)
         self.ladder_group = pygame.sprite.RenderPlain(*self.ladders)
         self.coin_group = pygame.sprite.RenderPlain(*self.coins)
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
+        self.castle_block_group = pygame.sprite.RenderPlain(*self.blocks)
         self.initlogs(screen)
         self.initladders(screen)
         self.initcoins(screen)
-        self.initprincesscastle(screen)
-        self.plr = [player.Player("player2.png", "player.png", (0, 460), 20, 20,0,2)]
+        self.initcastle(screen)
+        self.plr = [player.Player("player2.png", "player.png", (0, 480), 20, 20,0,2)]
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
         self.plr_group.draw(screen)
         self.playerparentdict ={}
         self.fireballparentdict={}
-        self.playerparentdict[500]=460
+        self.playerparentdict[500]=480
         for i in range (499,0,-1):
-            if(i in [460, 380, 300, 220, 140, 60]):
+            if(i in [480, 400, 320, 240, 160, 80]):
                 self.playerparentdict[i]=i
             else:
                 self.playerparentdict[i]=self.playerparentdict[i+1]
-        self.fireballparentdict[500]=460
+        self.fireballparentdict[500]=480
         for i in range (499,0,-1):
-            if(i in [460, 380, 300, 220, 140, 60]):
+            if(i in [480, 400, 320, 240, 160, 80]):
                 self.fireballparentdict[i]=i
             else:
                 self.fireballparentdict[i]=self.fireballparentdict[i+1]
 
     def initlogs(self, screen):  # Intialize all blocks
-        self.levellimits = {380: 1, 300: 2, 220: 1, 140: 2, 60: 1}
+        self.levellimits = {400: 1, 320: 2, 240: 1, 160: 2, 80: 1,30:3}
         self.blocks = [block.Block("log.png", "log.png", (0, 0), 1200, 20),
-                       block.Block("log.png", "log.png", (0, 80), 700, 20),
-                       block.Block("log.png", "log.png", (200, 160), 1000, 20),
-                       block.Block("log.png", "log.png", (0, 240), 1000, 20),
-                       block.Block("log.png", "log.png", (200, 320), 1000, 20),
-                       block.Block("log.png", "log.png", (0, 400), 1000, 20),
-                       block.Block("log.png", "log.png", (0, 480), 1200, 20),]
+                       block.Block("log.png", "log.png", (0, 100), 700, 20),
+                       block.Block("log.png", "log.png", (200, 180), 1000, 20),
+                       block.Block("log.png", "log.png", (0, 260), 1000, 20),
+                       block.Block("log.png", "log.png", (200, 340), 1000, 20),
+                       block.Block("log.png", "log.png", (0, 420), 1000, 20),
+                       block.Block("log.png", "log.png", (0, 500), 1200, 20),
+                       ]
         self.block_group = pygame.sprite.RenderPlain(*self.blocks)
         self.block_group.draw(screen)
-        self.donkey = donkey.Donkey("Donkey2.png","Donkey.png",(20,30),40,50,0)
+        self.donkey = donkey.Donkey("Donkey2.png","Donkey.png",(20,50),40,50,0)
         self.donkey_group = pygame.sprite.RenderPlain(self.donkey)
+        self.princess = princess.Princess("princess2.png","princess2.png",(120,20),20,30,0)
+        self.princess_group = pygame.sprite.RenderPlain(self.princess)
 
 
     def initladders(self, screen):  # Intialize all ladders
 
-        self.ladders = [ladder.Ladder("ladder.png", "ladder.png", (800, 399), 30, 95),
-                        ladder.Ladder("ladder.png", "ladder.png", (300, 319), 30, 95),
-                        ladder.Ladder("ladder.png", "ladder.png", (500, 239), 30, 95),
-                        ladder.Ladder("ladder.png", "ladder.png", (900, 159), 30, 95),
-                        ladder.Ladder("ladder.png", "ladder.png", (600, 79), 30, 95),
-                        ladder.Ladder("ladder_broken.png", "ladder_broken.png", (650, 315), 30, 35),
-                        ladder.Ladder("ladder_broken_down.png", "ladder_broken_down.png", (650, 380), 30, 35),
-                        ladder.Ladder("ladder_broken.png", "ladder_broken.png", (850, 235), 30, 35),
-                        ladder.Ladder("ladder_broken_down.png", "ladder_broken_down.png", (850, 300), 30, 35),
-                        ladder.Ladder("ladder_broken.png", "ladder_broken.png", (300, 75), 30, 35),
-                        ladder.Ladder("ladder_broken_down.png", "ladder_broken_down.png", (300, 140), 30, 35),
+        self.ladders = [ladder.Ladder("ladder.png", "ladder.png", (800, 419), 30, 95),
+                        ladder.Ladder("ladder.png", "ladder.png", (300, 339), 30, 95),
+                        ladder.Ladder("ladder.png", "ladder.png", (500, 259), 30, 95),
+                        ladder.Ladder("ladder.png", "ladder.png", (900, 179), 30, 95),
+                        ladder.Ladder("ladder.png", "ladder.png", (600, 99), 30, 95),
+                        ladder.Ladder("ladder_broken.png", "ladder_broken.png", (650, 335), 30, 35),
+                        ladder.Ladder("ladder_broken_down.png", "ladder_broken_down.png", (650, 400), 30, 35),
+                        ladder.Ladder("ladder_broken.png", "ladder_broken.png", (850, 255), 30, 35),
+                        ladder.Ladder("ladder_broken_down.png", "ladder_broken_down.png", (850, 320), 30, 35),
+                        ladder.Ladder("ladder_broken.png", "ladder_broken.png", (300, 95), 30, 35),
+                        ladder.Ladder("ladder_broken_down.png", "ladder_broken_down.png", (300, 160), 30, 35),
+                        ladder.Ladder("castleladder.png", "castleladder.png", (220, 45), 30, 60)
                         ]
-        self.ladderlimits = {(800, 399): 460, (300, 319): 380, (500, 239): 300, (900, 159): 220, (600, 79): 140,
-                             (650, 380): 380, (850, 300): 300, (300, 140): 140, (650, 315): 380, (850, 235): 300,
-                             (300, 75): 140}
+
+        for l in self.ladders:
+            x,y = l.getPosition()
+            w,h = l.getSize()
+            if h == 95:
+                self.ladderlimits[l.getPosition()] = y + 1 +60
+            else:
+                if h == 60:
+                    self.ladderlimits[l.getPosition()]= y+ 5+30
+                elif y % 10 == 0:
+                    self.ladderlimits[l.getPosition()]  = y
+                else:
+                    self.ladderlimits[l.getPosition()] = y+5+60
         self.ladder_group = pygame.sprite.RenderPlain(*self.ladders)
         self.ladder_group.draw(screen)
 
     def initcoins(self, screen):  # Intialize all coins
-        xlis = [450, 370, 290, 210, 130, 50]
+        levellis = [470, 390, 310, 230, 150, 70]
         self.coins = []
         x=0
         for i in range(0, 20):
-            y =  xlis[randint(0, 5)]
-            if y == 450 or y == 430:
+            y =  levellis[randint(0, 5)]
+            if y == 470:
                 x= random.randrange(0,1170,30)
-            elif y in [370,210,350,190,30]:
+            elif y in [390,230]:
                 x=random.randrange(0,1000,30)
-            elif y in [290,130,270,110]:  x=random.randrange(200,1170,30)
-            elif y == 50: x=random.randrange(350,700,30)
+            elif y in [310,150]:  x=random.randrange(200,1170,30)
+            elif y == 70: x=random.randrange(350,700,30)
 
             self.coins += [coin.Coin("coin.png", "coin.png", (x, y), 20, 20)]
 
         self.coin_group = pygame.sprite.RenderPlain(*self.coins)
         self.coin_group.draw(screen)
 
-    def initprincesscastle(self,screen):
-        castle = pygame.image.load("castle.png")
-        castle = pygame.transform.scale(castle,(100,100))
-        screen.blit(castle,(0,40))
-
+    def initcastle(self,screen):
+        self.castleblocks = [block.Block("castle.png", "castle.png", (110,50), 180,10),
+                             block.Block("castlepillar.png", "castlepillar.png", (100,20), 20,40),
+                             block.Block("castlepillar.png", "castlepillar.png", (280,20), 20,40),
+                             ]
+        self.castle_block_group=pygame.sprite.RenderPlain(*self.castleblocks)
+        self.castle_block_group.draw(screen)
 
     def createfireball(self):  # Creating fireballs
-        self.fireballs += [fireball.Fireball("fireball.png", "fireball.png", (30, 60), 20, 20, randint(1, 2))]
+        self.fireballs += [fireball.Fireball("fireball.png", "fireball.png", (30, 80), 20, 20, randint(1, 2))]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
 
     def key_pressed(self, event):  # Handling a key pressed event
@@ -122,8 +140,8 @@ class Board():
         x = max(x, 0)
         y = max(y, 0)
         x = min(x, 1170)
-        y = min(y, 460)
-        if y == 60 and x>700 :
+        y = min(y, 480)
+        if y == 80 and x>700 :
             y+=1
         if (y in self.levellimits and int(self.levellimits[y]) == 1 and x > 1000):
             y += 1
@@ -137,22 +155,19 @@ class Board():
         self.coin_group.draw(screen)
         self.block_group.draw(screen)
         self.ladder_group.draw(screen)
-        self.plr_group.draw(screen)
         self.fireball_group.draw(screen)
         self.donkey_group.draw(screen)
-        castle = pygame.image.load("castle.png")
-        castle = pygame.transform.scale(castle,(200,10))
-        screen.blit(castle,(110,50))
-        castle = pygame.image.load("castlepillar.png")
-        castle = pygame.transform.scale(castle,(20,40))
-        screen.blit(castle,(100,20))
-        castle = pygame.image.load("castlepillar.png")
-        castle = pygame.transform.scale(castle,(20,40))
-        screen.blit(castle,(300,20))
+        self.castle_block_group.draw(screen)
+        self.princess_group.draw(screen)
+        self.ladder_group.draw(screen)
+        self.plr_group.draw(screen)
+
 
     def getLadderCollisions(self):  # Check if player is in touch with any ladder
 
         state = 0
+        broken_ladders = [(650, 335), (650, 400), (850, 255), (850, 320), (300, 95), (300, 160)]
+        castleladder = (220, 50)
         for s in self.ladder_group.sprites():
             rect1 = self.plr[0].rect
             rect1.topleft = self.plr[0].getPosition()
@@ -160,7 +175,9 @@ class Board():
             rect2 = s.rect
             rect2.height = 95
             rect2.width = 30
-            if rect2.topleft in [(650, 315), (650, 380), (850, 235), (850, 300), (300, 75), (300, 140)]:
+            if rect2.topleft == castleladder:
+                rect2.height = 60
+            if rect2.topleft in broken_ladders:
                 rect2.height = 35
             if rect1.colliderect(rect2):
                 state = 1
@@ -184,7 +201,7 @@ class Board():
                 if self.plr[0].getLives() == 0:
                     return 0
                 else:
-                    self.plr[0].setPosition((0,460))
+                    self.plr[0].setPosition((0,480))
                     self.plr[0].setState(0)
                     self.plr[0].setLives(self.plr[0].getLives()-1)
                     return 1
@@ -193,7 +210,7 @@ class Board():
     def dropplayer(self):  # Drop if player is in middle of air
         x, y = self.plr[0].getPosition()
         levelpos = y
-        levelpos = min(460,levelpos)
+        levelpos = min(480,levelpos)
         levelpos = self.playerparentdict[levelpos]
 
         if y == levelpos:
@@ -215,7 +232,7 @@ class Board():
     def playerjump(self,jumpspeed):  # Jumping up function
         x, y = self.plr[0].getPosition()
         levelpos = y
-        levelpos = min(460,levelpos)
+        levelpos = min(480,levelpos)
         levelpos = self.playerparentdict[levelpos]
 
         if y <= levelpos - 30:
@@ -228,7 +245,7 @@ class Board():
     def playerjumpdown(self,jumpspeed):  # Jumping down function
         x, y = self.plr[0].getPosition()
         levelpos = y
-        levelpos = min(460,levelpos)
+        levelpos = min(480,levelpos)
         levelpos=self.playerparentdict[levelpos]
 
         if y >= levelpos:
@@ -247,7 +264,7 @@ class Board():
             rect2 = s.rect
             rect2.height = 95
             rect2.width = 30
-            if rect2.topleft in [(650, 315), (650, 380), (850, 235), (850, 300), (300, 75), (300, 140)]:
+            if rect2.topleft in [(650, 335), (650, 400), (850, 255), (850, 320), (300, 95), (300, 160)]:
                 rect2.height = 35
             if rect1.colliderect(rect2):
                 y = min(y, self.ladderlimits[rect2.topleft])
@@ -258,7 +275,7 @@ class Board():
         i=0
         for s in self.fireball_group.sprites():
             x, y = s.getPosition()
-            if x<=0 and y == 460:
+            if x<=0 and y == 480:
                 pass
             else:
                 state = s.getState()
@@ -277,7 +294,7 @@ class Board():
                             if val == 5:
                                 y+=10
                                 state = 3
-                    if y == 60 and x>700 :
+                    if y == 80 and x>700 :
                         y+=10
                         state = 3
                     if (y  in self.levellimits and int(self.levellimits[y]) == 1 and x > 1000):
@@ -294,7 +311,7 @@ class Board():
                 i += 1
         del self.fireballs[i:]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
-        self.donkey.setPosition((20,30))
+        self.donkey.setPosition((20,50))
         self.donkey.setState(self.donkey.getState()^flipdonkey)
 
     def getPlayerScore(self):
@@ -305,3 +322,16 @@ class Board():
 
     def getPlayerLives(self):
         return self.plr[0].getLives()
+
+    def checkwin(self):
+        x, y =self.plr[0].getPosition()
+        if y<= 35:
+            for b in self.castle_block_group.sprites():
+                rect1 = self.plr[0].rect
+                rect1.topleft = self.plr[0].getPosition()
+                rect1.height = rect1.width = 20
+                rect2 = b.rect
+                print rect2
+                if rect1.colliderect(rect2):
+                    return 1
+        return 0
