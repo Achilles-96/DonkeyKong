@@ -24,7 +24,8 @@ class Board():
         self.initlogs(screen)
         self.initladders(screen)
         self.initcoins(screen)
-        self.plr = [player.Player("player2.png", "player.png", (0, 450), 20, 20,0,2)]
+        #self.initprincess(screen)
+        self.plr = [player.Player("player2.png", "player.png", (0, 460), 20, 20,0,2)]
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
         self.plr_group.draw(screen)
         self.playerparentdict ={}
@@ -50,7 +51,7 @@ class Board():
                        block.Block("log.png", "log.png", (0, 240), 1000, 20),
                        block.Block("log.png", "log.png", (200, 320), 1000, 20),
                        block.Block("log.png", "log.png", (0, 400), 1000, 20),
-                       block.Block("log.png", "log.png", (0, 480), 1200, 20), ]
+                       block.Block("log.png", "log.png", (0, 480), 1200, 20),]
         self.block_group = pygame.sprite.RenderPlain(*self.blocks)
         self.block_group.draw(screen)
         self.donkey = donkey.Donkey("Donkey2.png","Donkey.png",(20,30),40,50,0)
@@ -88,15 +89,18 @@ class Board():
             elif y in [370,210,350,190,30]:
                 x=random.randrange(0,1000,1)
             elif y in [290,130,270,110]:  x=random.randrange(200,1170,1)
-            elif y == 50: x=random.randrange(0,700)
+            elif y == 50: x=random.randrange(100,700)
 
             self.coins += [coin.Coin("coin.png", "coin.png", (x, y), 20, 20)]
 
         self.coin_group = pygame.sprite.RenderPlain(*self.coins)
         self.coin_group.draw(screen)
 
+   # def initprincess(self,screen):
+
+
     def createfireball(self):  # Creating fireballs
-        self.fireballs += [fireball.Fireball("coin.png", "coin.png", (30, 60), 20, 20, randint(1, 2))]
+        self.fireballs += [fireball.Fireball("fireball.png", "fireball.png", (30, 60), 20, 20, randint(1, 2))]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
 
     def key_pressed(self, event):  # Handling a key pressed event
@@ -154,8 +158,7 @@ class Board():
         else:
             return 0
 
-    def checkfireballcollision(self):  #Check if player is dead and respawn
-        state = 0
+    def checkfireballcollision(self,de=0):  #Check if player is dead and respawn
         for s in self.fireball_group.sprites():
             rect1 = self.plr[0].rect
             rect1.topleft = self.plr[0].getPosition()
@@ -164,13 +167,12 @@ class Board():
             rect2.height = 25
             rect2.width = 25
             if rect1.colliderect(rect2):
-                state = 1
                 self.fireballs = []
                 self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
                 if self.plr[0].getLives() == 0:
                     return 0
                 else:
-                    self.plr[0].setPosition((0,450))
+                    self.plr[0].setPosition((0,460))
                     self.plr[0].setState(0)
                     self.plr[0].setLives(self.plr[0].getLives()-1)
                     return 1
@@ -179,7 +181,9 @@ class Board():
     def dropplayer(self):  # Drop if player is in middle of air
         x, y = self.plr[0].getPosition()
         levelpos = y
+        levelpos = min(460,levelpos)
         levelpos = self.playerparentdict[levelpos]
+
         if y == levelpos:
             return
         self.plr[0].setPosition((x,min(y+10,levelpos)))
@@ -199,19 +203,22 @@ class Board():
     def playerjump(self,jumpspeed):  # Jumping up function
         x, y = self.plr[0].getPosition()
         levelpos = y
+        levelpos = min(460,levelpos)
         levelpos = self.playerparentdict[levelpos]
+
         if y <= levelpos - 30:
             self.plr[0].setPosition((x,levelpos-30))
             return 1
         else:
-            print jumpspeed
             self.plr[0].setPosition((x,y-jumpspeed))
             return 0
 
     def playerjumpdown(self,jumpspeed):  # Jumping down function
         x, y = self.plr[0].getPosition()
         levelpos = y
+        levelpos = min(460,levelpos)
         levelpos=self.playerparentdict[levelpos]
+
         if y >= levelpos:
             self.plr[0].setPosition((x,levelpos))
             return 1

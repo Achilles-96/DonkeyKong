@@ -6,7 +6,6 @@ from random import randint
 import scoreboard
 
 
-
 class Game:
     def __init__(self, background):
         pygame.font.init()
@@ -30,8 +29,10 @@ class Game:
         jumpspeed = 0
         donkeytimer = 0
         lim =randint(50,70)
+        fireballhitme =0
         scoreboard1 = scoreboard.ScoreBoard("scoreboard.png",board1.getPlayerScore(),self.screen,"liveplayer.png")
         while 1:
+            fireballhitme =0
             self.screen.set_alpha(None)
             if timer == lim:
                 board1.createfireball()
@@ -73,25 +74,48 @@ class Game:
                 board1.updatefireballs(0)
             if stateup == 1 and ladderstate == 1:
                 board1.key_pressed(3)
-                if board1.checkfireballcollision() == 0:
+                dead = board1.checkfireballcollision(1)
+                if dead == 0:
                     break
+                elif dead == 1:
+                    fireballhitme = 1
+                    jumpstate = 0
 
             if statedown == 1 and ladderstate == 1:
                 board1.key_pressed(4)
-                if board1.checkfireballcollision() == 0:
+                dead = board1.checkfireballcollision(2)
+                if dead == 0:
                     break
+                elif dead == 1:
+                    fireballhitme = 1
+                    jumpstate = 0
+
             if ladderstate == 1:
                 board1.checkplayerlevel()
-                if board1.checkfireballcollision() == 0:
+                dead = board1.checkfireballcollision(3)
+                if dead == 0:
                     break
+                elif dead == 1:
+                    fireballhitme = 1
+                    jumpstate = 0
+
             if stateright == 1:
                 board1.key_pressed(1)
-                if board1.checkfireballcollision() == 0:
+                dead = board1.checkfireballcollision(4)
+                if dead == 0:
                     break
+                elif dead == 1:
+                    fireballhitme = 1
+                    jumpstate = 0
+
             if stateleft == 1:
                 board1.key_pressed(2)
-                if board1.checkfireballcollision() == 0:
+                dead = board1.checkfireballcollision(5)
+                if dead == 0:
                     break
+                elif dead == 1:
+                    fireballhitme = 1
+                    jumpstate = 0
 
             if ladderstate == 1 and jumpstate == 1: jumpstate = 0
             if jumpstate == 1:
@@ -101,11 +125,13 @@ class Game:
                 else:
                     jumpspeed -= 2
 
-                if board1.checkfireballcollision() == 0:
+                dead = board1.checkfireballcollision(6)
+                print dead
+                if dead == 0:
                     break
-                elif board1.checkfireballcollision() == 1:
+                elif dead == 1:
+                    fireballhitme = 1
                     jumpstate = 0
-                    jumpspeed = 0
 
             if jumpstate == 2:
                 if board1.playerjumpdown(jumpspeed) == 1:
@@ -114,20 +140,25 @@ class Game:
                 else:
                     jumpspeed += 2
 
-                if board1.checkfireballcollision() == 0:
+                dead = board1.checkfireballcollision(7)
+                if dead == 0:
                     break
-                elif board1.checkfireballcollision() == 1:
-                    jumpstate = 0
-                    jumpspeed = 0
+                elif dead == 1:
+                    fireballhitme = 1
+                    jumpstate =0
 
             if ladderstate == 0 and jumpstate == 0:
                 board1.dropplayer()
-                if board1.checkfireballcollision() == 0:
+                dead = board1.checkfireballcollision(8)
+                if dead == 0:
                     break
+                elif dead == 1:
+                    fireballhitme = 1
+                    jumpstate = 0
 
             self.screen.blit(self.background, self.background.get_rect())
             board1.update(self.screen)
-            board1.setPlayerScore(prevScore+collectCoin*5)
+            board1.setPlayerScore(max(0,prevScore+collectCoin*5-fireballhitme*25))
             scoreboard1.update(board1.getPlayerScore(),self.screen)
             scoreboard1.update_lives(self.screen,board1.getPlayerLives())
             pygame.display.flip()

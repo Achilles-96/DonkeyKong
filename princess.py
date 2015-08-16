@@ -4,5 +4,5 @@ import person
 
 class Princess(person.PersonSprite):
 
-    def __init__(self, image_normal, image_hit, position):
-        person.PersonSprite.__init__(self, image_normal, image_hit, position)
+    def __init__(self, image_normal, image_hit, position, width, height,state,lives):
+        person.PersonSprite.__init__(self, image_normal, image_hit, position, width, height,state,lives)
