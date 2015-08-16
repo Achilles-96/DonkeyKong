@@ -24,7 +24,7 @@ class Board():
         self.initlogs(screen)
         self.initladders(screen)
         self.initcoins(screen)
-        #self.initprincess(screen)
+        self.initprincesscastle(screen)
         self.plr = [player.Player("player2.png", "player.png", (0, 460), 20, 20,0,2)]
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
         self.plr_group.draw(screen)
@@ -85,18 +85,21 @@ class Board():
         for i in range(0, 20):
             y =  xlis[randint(0, 5)]
             if y == 450 or y == 430:
-                x= random.randrange(0,1170,1)
+                x= random.randrange(0,1170,30)
             elif y in [370,210,350,190,30]:
-                x=random.randrange(0,1000,1)
-            elif y in [290,130,270,110]:  x=random.randrange(200,1170,1)
-            elif y == 50: x=random.randrange(100,700)
+                x=random.randrange(0,1000,30)
+            elif y in [290,130,270,110]:  x=random.randrange(200,1170,30)
+            elif y == 50: x=random.randrange(350,700,30)
 
             self.coins += [coin.Coin("coin.png", "coin.png", (x, y), 20, 20)]
 
         self.coin_group = pygame.sprite.RenderPlain(*self.coins)
         self.coin_group.draw(screen)
 
-   # def initprincess(self,screen):
+    def initprincesscastle(self,screen):
+        castle = pygame.image.load("castle.png")
+        castle = pygame.transform.scale(castle,(100,100))
+        screen.blit(castle,(0,40))
 
 
     def createfireball(self):  # Creating fireballs
@@ -120,7 +123,7 @@ class Board():
         y = max(y, 0)
         x = min(x, 1170)
         y = min(y, 460)
-        if y == 80 and x>700 :
+        if y == 60 and x>700 :
             y+=1
         if (y in self.levellimits and int(self.levellimits[y]) == 1 and x > 1000):
             y += 1
@@ -137,6 +140,15 @@ class Board():
         self.plr_group.draw(screen)
         self.fireball_group.draw(screen)
         self.donkey_group.draw(screen)
+        castle = pygame.image.load("castle.png")
+        castle = pygame.transform.scale(castle,(200,10))
+        screen.blit(castle,(110,50))
+        castle = pygame.image.load("castlepillar.png")
+        castle = pygame.transform.scale(castle,(20,40))
+        screen.blit(castle,(100,20))
+        castle = pygame.image.load("castlepillar.png")
+        castle = pygame.transform.scale(castle,(20,40))
+        screen.blit(castle,(300,20))
 
     def getLadderCollisions(self):  # Check if player is in touch with any ladder
 

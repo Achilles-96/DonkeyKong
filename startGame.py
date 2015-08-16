@@ -126,7 +126,6 @@ class Game:
                     jumpspeed -= 2
 
                 dead = board1.checkfireballcollision(6)
-                print dead
                 if dead == 0:
                     break
                 elif dead == 1:
