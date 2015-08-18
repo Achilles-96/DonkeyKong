@@ -1,5 +1,5 @@
 __author__ = 'raghuram'
-import pygame, math, sys
+import pygame
 import player
 import princess
 import donkey
@@ -164,7 +164,7 @@ class Board:
         x = max(x, 0)
         y = max(y, 0)
         x = min(x, 1170)
-        y = min(y, 480)
+        y = min(y, self.PLAYER_SPAWN_LEVEL)
         #Detecting that palyer should drop beyond block limits
         if y == 80 and x>700 :
             y+=0.1*self.PLAYER_SPEED
@@ -178,12 +178,11 @@ class Board:
     def update(self, screen):  # Update the board
         self.coin_group.draw(screen)
         self.block_group.draw(screen)
+        self.castle_block_group.draw(screen)
         self.ladder_group.draw(screen)
         self.fireball_group.draw(screen)
         self.donkey_group.draw(screen)
-        self.castle_block_group.draw(screen)
         self.princess_group.draw(screen)
-        self.ladder_group.draw(screen)
         self.plr_group.draw(screen)
 
 
@@ -231,7 +230,7 @@ class Board:
                 if self.plr[0].getLives() == 0:
                     return 0
                 else:
-                    self.plr[0].setPosition((0,480))
+                    self.respawnPlayer()
                     self.plr[0].setState(0)
                     self.plr[0].setLives(self.plr[0].getLives()-1)
                     return 1
@@ -369,3 +368,13 @@ class Board:
 
     def setPlayerstraight(self):
         self.plr[0].setState(3)
+
+    def respawnPlayer(self):
+        self.plr[0].setPosition((0,self.PLAYER_SPAWN_LEVEL))
+
+    def setplayerlives(self):
+        self.plr[0].setLives(2)
+
+    def killfireballs(self):
+        self.fireballs=[]
+        self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
