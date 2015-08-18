@@ -9,7 +9,7 @@ import random
 from pygame.locals import *
 
 
-class Board():
+class Board:
     def __init__(self, screen):
         self.blocks = []
         self.ladders = []
@@ -18,6 +18,23 @@ class Board():
         self.castleblocks = []
         self.levellimits = {}
         self.ladderlimits = {}
+        #start defining Constamts here
+        self.PLAYER_SPEED = 10
+        self.PLAYER_CLIMB_SPEED = 5
+        self.FULL_LADDER_HEIGHT = 95
+        self.LADDER_WIDTH = 30
+        self.HALF_LADDER_HEIGHT = 35
+        self.PLAYER_HEIGHT = 20
+        self.PLAYER_WIDTH = 20
+        self.COIN_WIDTH = 20
+        self.COIN_HEIGHT = 20
+        self.COIN_LEVELS=[470, 390, 310, 230, 150, 70]
+        self.FIREBALL_HEIGHT =25
+        self.FIREBALL_WIDTH =25
+        self.FIREBALL_SPEED = 5
+        self.JUMP_LIMIT = 30
+        self.PLAYER_SPAWN_LEVEL = 480
+        #End defining constants
         self.block_group = pygame.sprite.RenderPlain(*self.blocks)
         self.ladder_group = pygame.sprite.RenderPlain(*self.ladders)
         self.coin_group = pygame.sprite.RenderPlain(*self.coins)
@@ -26,20 +43,23 @@ class Board():
         self.initlogs(screen)
         self.initladders(screen)
         self.initcoins(screen)
+        self.initdonkey(screen)
+        self.initprincess(screen)
         self.initcastle(screen)
-        self.plr = [player.Player("images/player2.png", "images/player.png","images/player3.png","images/player4.png", (0, 480), 20, 20,0,2)]
+        self.plr = [player.Player("images/player2.png", "images/player.png","images/player3.png","images/player4.png",
+                                  (0, self.PLAYER_SPAWN_LEVEL), self.PLAYER_WIDTH,self.PLAYER_HEIGHT,0,2)]
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
         self.plr_group.draw(screen)
         self.playerparentdict ={}
         self.fireballparentdict={}
-        self.playerparentdict[500]=480
-        for i in range (499,0,-1):
+        self.playerparentdict[500]=self.PLAYER_SPAWN_LEVEL
+        for i in range (499,0,-1):#Player's regular positions in each level
             if(i in [480, 400, 320, 240, 160, 80]):
                 self.playerparentdict[i]=i
             else:
                 self.playerparentdict[i]=self.playerparentdict[i+1]
-        self.fireballparentdict[500]=480
-        for i in range (499,0,-1):
+        self.fireballparentdict[500]=self.PLAYER_SPAWN_LEVEL
+        for i in range (499,0,-1):#Fireballs' regular positions in each level
             if(i in [480, 400, 320, 240, 160, 80]):
                 self.fireballparentdict[i]=i
             else:
@@ -57,26 +77,32 @@ class Board():
                        ]
         self.block_group = pygame.sprite.RenderPlain(*self.blocks)
         self.block_group.draw(screen)
+
+    def initdonkey(self,screen):
         self.donkey = donkey.Donkey("images/Donkey2.png","images/Donkey.png",(20,50),40,50,0)
         self.donkey_group = pygame.sprite.RenderPlain(self.donkey)
+        self.donkey_group.draw(screen)
+
+    def initprincess(self,screen):
         self.princess = princess.Princess("images/princess2.png","images/princess2.png",(120,20),20,30,0)
         self.princess_group = pygame.sprite.RenderPlain(self.princess)
+        self.princess_group.draw(screen)
 
 
     def initladders(self, screen):  # Intialize all ladders
 
-        self.ladders = [ladder.Ladder("images/ladder.png", "images/ladder.png", (800, 419), 30, 95),
-                        ladder.Ladder("images/ladder.png", "images/ladder.png", (300, 339), 30, 95),
-                        ladder.Ladder("images/ladder.png", "images/ladder.png", (500, 259), 30, 95),
-                        ladder.Ladder("images/ladder.png", "images/ladder.png", (900, 179), 30, 95),
-                        ladder.Ladder("images/ladder.png", "images/ladder.png", (600, 99), 30, 95),
-                        ladder.Ladder("images/ladder_broken.png", "images/ladder_broken.png", (650, 335), 30, 35),
-                        ladder.Ladder("images/ladder_broken_down.png", "images/ladder_broken_down.png", (650, 400), 30, 35),
-                        ladder.Ladder("images/ladder_broken.png", "images/ladder_broken.png", (850, 255), 30, 35),
-                        ladder.Ladder("images/ladder_broken_down.png", "images/ladder_broken_down.png", (850, 320), 30, 35),
-                        ladder.Ladder("images/ladder_broken.png", "images/ladder_broken.png", (300, 95), 30, 35),
-                        ladder.Ladder("images/ladder_broken_down.png", "images/ladder_broken_down.png", (300, 160), 30, 35),
-                        ladder.Ladder("images/castleladder.png", "images/castleladder.png", (220, 45), 30, 60)
+        self.ladders = [ladder.Ladder("images/ladder.png", "images/ladder.png", (800, 419), self.LADDER_WIDTH, self.FULL_LADDER_HEIGHT),
+                        ladder.Ladder("images/ladder.png", "images/ladder.png", (300, 339), self.LADDER_WIDTH, self.FULL_LADDER_HEIGHT),
+                        ladder.Ladder("images/ladder.png", "images/ladder.png", (500, 259), self.LADDER_WIDTH, self.FULL_LADDER_HEIGHT),
+                        ladder.Ladder("images/ladder.png", "images/ladder.png", (900, 179), self.LADDER_WIDTH, self.FULL_LADDER_HEIGHT),
+                        ladder.Ladder("images/ladder.png", "images/ladder.png", (600, 99), self.LADDER_WIDTH, self.FULL_LADDER_HEIGHT),
+                        ladder.Ladder("images/ladder_broken.png", "images/ladder_broken.png", (650, 335), self.LADDER_WIDTH, self.HALF_LADDER_HEIGHT),
+                        ladder.Ladder("images/ladder_broken_down.png", "images/ladder_broken_down.png", (650, 400), self.LADDER_WIDTH, self.HALF_LADDER_HEIGHT),
+                        ladder.Ladder("images/ladder_broken.png", "images/ladder_broken.png", (850, 255), self.LADDER_WIDTH,self.HALF_LADDER_HEIGHT),
+                        ladder.Ladder("images/ladder_broken_down.png", "images/ladder_broken_down.png", (850, 320), self.LADDER_WIDTH, self.HALF_LADDER_HEIGHT),
+                        ladder.Ladder("images/ladder_broken.png", "images/ladder_broken.png", (300, 95), self.LADDER_WIDTH, self.HALF_LADDER_HEIGHT),
+                        ladder.Ladder("images/ladder_broken_down.png", "images/ladder_broken_down.png", (300, 160), self.LADDER_WIDTH, self.HALF_LADDER_HEIGHT),
+                        ladder.Ladder("images/castleladder.png", "images/castleladder.png", (220, 45), self.LADDER_WIDTH, ((self.FULL_LADDER_HEIGHT-5)*2)/3)
                         ]
 
         for l in self.ladders:
@@ -95,11 +121,10 @@ class Board():
         self.ladder_group.draw(screen)
 
     def initcoins(self, screen):  # Intialize all coins
-        levellis = [470, 390, 310, 230, 150, 70]
         self.coins = []
         x=0
         for i in range(0, 20):
-            y =  levellis[randint(0, 5)]
+            y =  self.COIN_LEVELS[randint(0, 5)]
             if y == 470:
                 x= random.randrange(0,1170,30)
             elif y in [390,230]:
@@ -107,7 +132,7 @@ class Board():
             elif y in [310,150]:  x=random.randrange(200,1170,30)
             elif y == 70: x=random.randrange(350,700,30)
 
-            self.coins += [coin.Coin("images/coin.png", "images/coin.png", (x, y), 20, 20)]
+            self.coins += [coin.Coin("images/coin.png", "images/coin.png", (x, y), self.COIN_WIDTH, self.COIN_HEIGHT)]
 
         self.coin_group = pygame.sprite.RenderPlain(*self.coins)
         self.coin_group.draw(screen)
@@ -121,31 +146,32 @@ class Board():
         self.castle_block_group.draw(screen)
 
     def createfireball(self):  # Creating fireballs
-        self.fireballs += [fireball.Fireball("images/fireball.png", "images/fireball.png", (30, 80), 20, 20, randint(1, 2))]
+        self.fireballs += [fireball.Fireball("images/fireball.png", "images/fireball.png", (30, 80), self.FIREBALL_WIDTH,self.FIREBALL_HEIGHT, randint(1, 2))]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
 
     def key_pressed(self, event):  # Handling a key pressed event
         x, y = self.plr[0].getPosition()
         if event == 1:
             self.plr[0].setState(0)
-            x += 10
+            x += self.PLAYER_SPEED
         if event == 2:
             self.plr[0].setState(1)
-            x -= 10
+            x -= self.PLAYER_SPEED
         if event == 3:
-            y -= 5
+            y -= self.PLAYER_CLIMB_SPEED
         if event == 4:
-            y += 10
+            y += self.PLAYER_SPEED
         x = max(x, 0)
         y = max(y, 0)
         x = min(x, 1170)
         y = min(y, 480)
+        #Detecting that palyer should drop beyond block limits
         if y == 80 and x>700 :
-            y+=1
+            y+=0.1*self.PLAYER_SPEED
         if (y in self.levellimits and int(self.levellimits[y]) == 1 and x > 1000):
-            y += 1
+            y += 0.1*self.PLAYER_SPEED
         if (y in self.levellimits and int(self.levellimits[y]) == 2 and x < 170):
-            y += 1
+            y += 0.1*self.PLAYER_SPEED
         self.plr[0].setPosition((x,y))
 
 
@@ -170,17 +196,18 @@ class Board():
             rect1 = self.plr[0].rect
             rect1.topleft = self.plr[0].getPosition()
             playerx,playery = rect1.topleft
-            rect1.height = rect1.width = 20
+            rect1.height = self.PLAYER_HEIGHT
+            rect1.width = self.PLAYER_WIDTH
             rect2 = s.rect
             ladderx,laddery = s.rect.topleft
-            rect2.height = 95
-            rect2.width = 30
+            rect2.height = self.FULL_LADDER_HEIGHT
+            rect2.width = self.LADDER_WIDTH
             if rect2.topleft == castleladder:
-                rect2.height = 60
+                rect2.height = ((self.FULL_LADDER_HEIGHT-5)*2)/3
             if rect2.topleft in broken_ladders:
-                rect2.height = 35
+                rect2.height = self.HALF_LADDER_HEIGHT
             if rect1.colliderect(rect2):
-                if playery not in self.levellimits and playery!=480:
+                if playery not in self.levellimits and playery!=self.PLAYER_SPAWN_LEVEL:
                     self.plr[0].setPosition((ladderx+5,playery))
                 self.plr[0].setState(2)
                 state = 1
@@ -196,8 +223,8 @@ class Board():
             rect1.topleft = self.plr[0].getPosition()
             rect1.height = rect1.width = 20
             rect2 = s.rect
-            rect2.height = 25
-            rect2.width = 25
+            rect2.height = self.FIREBALL_HEIGHT
+            rect2.width = self.FIREBALL_WIDTH
             if rect1.colliderect(rect2):
                 self.fireballs = []
                 self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
@@ -213,7 +240,7 @@ class Board():
     def dropplayer(self):  # Drop if player is in middle of air
         x, y = self.plr[0].getPosition()
         levelpos = y
-        levelpos = min(480,levelpos)
+        levelpos = min(self.PLAYER_SPAWN_LEVEL,levelpos)
         levelpos = self.playerparentdict[levelpos]
 
         if y == levelpos:
@@ -224,9 +251,11 @@ class Board():
         for c in self.coin_group.sprites():
             rect1 = self.plr[0].rect
             rect1.topleft = self.plr[0].getPosition()
-            rect1.height = rect1.width = 20
+            rect1.height = self.PLAYER_HEIGHT
+            rect1.width = self.PLAYER_WIDTH
             rect2 = c.rect
-            rect2.height = rect2.width = 30
+            rect2.height = self.COIN_HEIGHT
+            rect2.width = self.COIN_WIDTH
             if rect1.colliderect(rect2):
                 c.kill()
                 return 1
@@ -235,11 +264,11 @@ class Board():
     def playerjump(self,jumpspeed):  # Jumping up function
         x, y = self.plr[0].getPosition()
         levelpos = y
-        levelpos = min(480,levelpos)
+        levelpos = min(self.PLAYER_SPAWN_LEVEL,levelpos)
         levelpos = self.playerparentdict[levelpos]
 
-        if y <= levelpos - 30:
-            self.plr[0].setPosition((x,levelpos-30))
+        if y <= levelpos - self.JUMP_LIMIT:
+            self.plr[0].setPosition((x,levelpos-self.JUMP_LIMIT))
             return 1
         else:
             self.plr[0].setPosition((x,y-jumpspeed))
@@ -248,7 +277,7 @@ class Board():
     def playerjumpdown(self,jumpspeed):  # Jumping down function
         x, y = self.plr[0].getPosition()
         levelpos = y
-        levelpos = min(480,levelpos)
+        levelpos = min(self.PLAYER_SPAWN_LEVEL,levelpos)
         levelpos=self.playerparentdict[levelpos]
 
         if y >= levelpos:
@@ -263,7 +292,8 @@ class Board():
         for s in self.ladder_group.sprites():
             rect1 = self.plr[0].rect
             rect1.topleft = self.plr[0].getPosition()
-            rect1.height = rect1.width = 20
+            rect1.height = self.PLAYER_HEIGHT
+            rect1.width = self.PLAYER_WIDTH
             rect2 = s.rect
             if rect1.colliderect(rect2):
                 y = min(y, self.ladderlimits[rect2.topleft])
@@ -274,7 +304,7 @@ class Board():
         i=0
         for s in self.fireball_group.sprites():
             x, y = s.getPosition()
-            if x<=0 and y == 480:
+            if x<=0 and y == self.PLAYER_SPAWN_LEVEL:
                 pass
             else:
                 state = s.getState()
@@ -282,9 +312,9 @@ class Board():
                 if x >= 1180: state = 2
                 if state != 3:
                     if state == 1:
-                        x += 5
+                        x += self.FIREBALL_SPEED
                     else:
-                        x -= 5
+                        x -= self.FIREBALL_SPEED
                     collisions = pygame.sprite.spritecollide(s,self.ladder_group,False)
                     if collisions:
                         ly =self.ladderlimits[collisions[0].rect.topleft]
@@ -292,27 +322,27 @@ class Board():
                         if y != ly:
                             val = randint(1,10)
                             if val == 5:
-                                y+=10
+                                y+=2*self.FIREBALL_SPEED
                                 x=ladderx
                                 state = 3
                     if y == 80 and x>700 :
-                        y+=10
+                        y+=2*self.FIREBALL_SPEED
                         state = 3
                     if (y  in self.levellimits and int(self.levellimits[y]) == 1 and x > 1000):
-                        y += 10
+                        y += 2*self.FIREBALL_SPEED
                         state = 3
                     if (y  in self.levellimits and int(self.levellimits[y]) == 2 and x < 170):
-                        y += 10
+                        y += 2*self.FIREBALL_SPEED
                         state = 3
                 else:
-                    y=min(self.fireballparentdict[y],y+10)
+                    y=min(self.fireballparentdict[y],y+2*self.FIREBALL_SPEED)
                     if self.fireballparentdict[y] == y:
                         state=randint(0,1)
-                self.fireballs[i] = fireball.Fireball("images/fireball.png", "images/fireball.png", (x, y), 20, 20, state)
+                self.fireballs[i] = fireball.Fireball("images/fireball.png", "images/fireball.png", (x, y),
+                                                      self.FIREBALL_WIDTH, self.FIREBALL_HEIGHT, state)
                 i += 1
         del self.fireballs[i:]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
-        self.donkey.setPosition((20,50))
         self.donkey.setState(self.donkey.getState()^flipdonkey)
 
     def getPlayerScore(self):
@@ -330,7 +360,8 @@ class Board():
             for b in self.castle_block_group.sprites():
                 rect1 = self.plr[0].rect
                 rect1.topleft = self.plr[0].getPosition()
-                rect1.height = rect1.width = 20
+                rect1.height = self.PLAYER_HEIGHT
+                rect1.width = self.PLAYER_WIDTH
                 rect2 = b.rect
                 if rect1.colliderect(rect2):
                     return 1

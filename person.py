@@ -19,7 +19,6 @@ class PersonSprite(pygame.sprite.Sprite):
             self.image=self.right
         self.left =pygame.transform.scale(self.left, (width, height))
         self.right =pygame.transform.scale(self.right, (width, height))
-        #self.image = pygame.transform.scale(self.left, (width, height))
         self.image=self.left
         self.rect = pygame.Rect(self.image.get_rect())
         self.rect.topleft = position

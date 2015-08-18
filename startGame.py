@@ -7,7 +7,7 @@ import scoreboard
 
 
 class Game:
-    def __init__(self, background,quitimage,yes_image,no_image):
+    def __init__(self, background,quitimage,yes_image,no_image,restart_image):
         pygame.font.init()
         self.screen = pygame.display.set_mode((1200, 620),DOUBLEBUF)
         self.screen.set_alpha(None)
@@ -16,10 +16,12 @@ class Game:
         self.quitimage = pygame.image.load(quitimage)
         self.yesimage = pygame.image.load(yes_image)
         self.noimage = pygame.image.load(no_image)
+        self.restart = pygame.image.load(restart_image)
         self.background = pygame.transform.scale(self.background, (1200, 620))
         self.quitimage = pygame.transform.scale(self.quitimage, (400, 60))
         self.yesimage = pygame.transform.scale(self.yesimage, (50, 50))
         self.noimage = pygame.transform.scale(self.noimage, (50, 50))
+        self.restart = pygame.transform.scale(self.restart, (400, 60))
         self.screen.blit(self.background, self.background.get_rect())
         pygame.display.flip()
 
@@ -29,14 +31,11 @@ class Game:
         stateleft = 0
         stateup = 0
         statedown = 0
-        ladderstate = 0
         jumpstate = 0
         timer = 0
         jumpspeed = 0
         donkeytimer = 0
         lim =randint(50,70)
-        fireballhitme =0
-        quitstate = 0
         scoreboard1 = scoreboard.ScoreBoard("images/scoreboard.png",board1.getPlayerScore(),self.screen,"images/liveplayer.png")
         while 1:
             quitstate = 0
@@ -92,7 +91,10 @@ class Game:
                 board1.key_pressed(3)
                 dead = board1.checkfireballcollision(1)
                 if dead == 0:
-                    return 0
+                    if self.askforrestart() == 1:
+                        return -1
+                    else:
+                        return 0
                 elif dead == 1:
                     fireballhitme = 1
                     jumpstate = 0
@@ -101,7 +103,10 @@ class Game:
                 board1.key_pressed(4)
                 dead = board1.checkfireballcollision(2)
                 if dead == 0:
-                    return 0
+                    if self.askforrestart() == 1:
+                        return -1
+                    else:
+                        return 0
                 elif dead == 1:
                     fireballhitme = 1
                     jumpstate = 0
@@ -110,7 +115,10 @@ class Game:
                 board1.checkplayerlevel()
                 dead = board1.checkfireballcollision(3)
                 if dead == 0:
-                    return 0
+                    if self.askforrestart() == 1:
+                        return -1
+                    else:
+                        return 0
                 elif dead == 1:
                     fireballhitme = 1
                     jumpstate = 0
@@ -119,7 +127,10 @@ class Game:
                 board1.key_pressed(1)
                 dead = board1.checkfireballcollision(4)
                 if dead == 0:
-                    return 0
+                    if self.askforrestart() == 1:
+                        return -1
+                    else:
+                        return 0
                 elif dead == 1:
                     fireballhitme = 1
                     jumpstate = 0
@@ -128,7 +139,10 @@ class Game:
                 board1.key_pressed(2)
                 dead = board1.checkfireballcollision(5)
                 if dead == 0:
-                    return 0
+                    if self.askforrestart() == 1:
+                        return -1
+                    else:
+                        return 0
                 elif dead == 1:
                     fireballhitme = 1
                     jumpstate = 0
@@ -146,7 +160,10 @@ class Game:
 
                 dead = board1.checkfireballcollision(6)
                 if dead == 0:
-                    return 0
+                    if self.askforrestart() == 1:
+                        return -1
+                    else:
+                        return 0
                 elif dead == 1:
                     fireballhitme = 1
                     jumpstate = 0
@@ -160,7 +177,10 @@ class Game:
 
                 dead = board1.checkfireballcollision(7)
                 if dead == 0:
-                    return 0
+                    if self.askforrestart() == 1:
+                        return -1
+                    else:
+                        return 0
                 elif dead == 1:
                     fireballhitme = 1
                     jumpstate =0
@@ -169,13 +189,19 @@ class Game:
                 board1.dropplayer()
                 dead = board1.checkfireballcollision(8)
                 if dead == 0:
-                    return 0
+                    if self.askforrestart() == 1:
+                        return -1
+                    else:
+                        return 0
                 elif dead == 1:
                     fireballhitme = 1
                     jumpstate = 0
 
             if board1.checkwin() == 1:
-                return 0
+                if self.askforrestart() == 1:
+                    return -1
+                else:
+                    return 0
             self.screen.blit(self.background, self.background.get_rect())
             board1.update(self.screen)
             board1.setPlayerScore(max(0,prevScore+collectCoin*5-fireballhitme*25))
@@ -197,9 +223,24 @@ class Game:
                         return 0
             pygame.display.flip()
 
+    def askforrestart(self):
+        while 1:
+            self.screen.blit(self.restart,(400,200))
+            yes = self.screen.blit(self.yesimage,(500,300))
+            no = self.screen.blit(self.noimage,(650,300))
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
+                    if yes.collidepoint(pos):
+                        return 0
+                    elif no.collidepoint(pos):
+                        return 1
+            pygame.display.flip()
+
 
 if __name__ == '__main__':
     while 1:
-        game = Game('images/background.jpg','images/areyousure.png','images/yes.png','images/no.png')
-        if game.run() == -1:
+        game = Game('images/background.jpg','images/areyousure.png','images/yes.png','images/no.png','images/restart.png')
+        status = game.run()
+        if status == -1:
             break

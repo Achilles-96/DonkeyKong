@@ -10,7 +10,6 @@ class GameObject(pygame.sprite.Sprite):
         self.rect = pygame.Rect(self.normal.get_rect())
         self.rect.topleft = position
         self.position = position
-        # self.image = pygame.transform.scale(self.normal,(width*scale,height*scale))
         self.image = self.normal
         self.image = pygame.transform.scale(self.image, (width, height))
 
