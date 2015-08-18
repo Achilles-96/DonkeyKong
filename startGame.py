@@ -37,7 +37,7 @@ class Game:
         lim =randint(50,70)
         fireballhitme =0
         quitstate = 0
-        scoreboard1 = scoreboard.ScoreBoard("scoreboard.png",board1.getPlayerScore(),self.screen,"liveplayer.png")
+        scoreboard1 = scoreboard.ScoreBoard("images/scoreboard.png",board1.getPlayerScore(),self.screen,"images/liveplayer.png")
         while 1:
             quitstate = 0
             fireballhitme =0
@@ -80,7 +80,7 @@ class Game:
 
             if quitstate == 1:
                 if self.confirmquit() == 1:
-                    return 1
+                    return -1
 
             donkeytimer += 1
             if donkeytimer == 10:
@@ -200,6 +200,6 @@ class Game:
 
 if __name__ == '__main__':
     while 1:
-        game = Game('background.jpg','areyousure.png','yes.png','no.png')
-        if game.run() == 1:
+        game = Game('images/background.jpg','images/areyousure.png','images/yes.png','images/no.png')
+        if game.run() == -1:
             break
