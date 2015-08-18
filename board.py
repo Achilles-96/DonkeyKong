@@ -27,7 +27,7 @@ class Board():
         self.initladders(screen)
         self.initcoins(screen)
         self.initcastle(screen)
-        self.plr = [player.Player("player2.png", "player.png", (0, 480), 20, 20,0,2)]
+        self.plr = [player.Player("player2.png", "player.png","player3.png","player4.png", (0, 480), 20, 20,0,2)]
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
         self.plr_group.draw(screen)
         self.playerparentdict ={}
@@ -126,12 +126,11 @@ class Board():
 
     def key_pressed(self, event):  # Handling a key pressed event
         x, y = self.plr[0].getPosition()
-        state =0
         if event == 1:
-            state =0
+            self.plr[0].setState(0)
             x += 10
         if event == 2:
-            state =1
+            self.plr[0].setState(1)
             x -= 10
         if event == 3:
             y -= 5
@@ -147,9 +146,8 @@ class Board():
             y += 1
         if (y in self.levellimits and int(self.levellimits[y]) == 2 and x < 170):
             y += 1
-        lives = self.plr[0].getLives()
         self.plr[0].setPosition((x,y))
-        self.plr[0].setState(state)
+
 
     def update(self, screen):  # Update the board
         self.coin_group.draw(screen)
@@ -171,8 +169,10 @@ class Board():
         for s in self.ladder_group.sprites():
             rect1 = self.plr[0].rect
             rect1.topleft = self.plr[0].getPosition()
+            playerx,playery = rect1.topleft
             rect1.height = rect1.width = 20
             rect2 = s.rect
+            ladderx,laddery = s.rect.topleft
             rect2.height = 95
             rect2.width = 30
             if rect2.topleft == castleladder:
@@ -180,6 +180,9 @@ class Board():
             if rect2.topleft in broken_ladders:
                 rect2.height = 35
             if rect1.colliderect(rect2):
+                if playery not in self.levellimits and playery!=480:
+                    self.plr[0].setPosition((ladderx+5,playery))
+                self.plr[0].setState(2)
                 state = 1
                 break
         if state == 1:
@@ -262,10 +265,6 @@ class Board():
             rect1.topleft = self.plr[0].getPosition()
             rect1.height = rect1.width = 20
             rect2 = s.rect
-            rect2.height = 95
-            rect2.width = 30
-            if rect2.topleft in [(650, 335), (650, 400), (850, 255), (850, 320), (300, 95), (300, 160)]:
-                rect2.height = 35
             if rect1.colliderect(rect2):
                 y = min(y, self.ladderlimits[rect2.topleft])
                 self.plr[0].setPosition((x,y))
@@ -289,10 +288,12 @@ class Board():
                     collisions = pygame.sprite.spritecollide(s,self.ladder_group,False)
                     if collisions:
                         ly =self.ladderlimits[collisions[0].rect.topleft]
+                        ladderx,laddery = collisions[0].rect.topleft
                         if y != ly:
                             val = randint(1,10)
                             if val == 5:
                                 y+=10
+                                x=ladderx
                                 state = 3
                     if y == 80 and x>700 :
                         y+=10
@@ -331,7 +332,9 @@ class Board():
                 rect1.topleft = self.plr[0].getPosition()
                 rect1.height = rect1.width = 20
                 rect2 = b.rect
-                print rect2
                 if rect1.colliderect(rect2):
                     return 1
         return 0
+
+    def setPlayerstraight(self):
+        self.plr[0].setState(3)
