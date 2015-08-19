@@ -34,6 +34,7 @@ class Board:
         self.FIREBALL_SPEED = 5
         self.JUMP_LIMIT = 30
         self.PLAYER_SPAWN_LEVEL = 480
+        self.DONKEY_SPEED = 3
         #End defining constants
         self.block_group = pygame.sprite.RenderPlain(*self.blocks)
         self.ladder_group = pygame.sprite.RenderPlain(*self.ladders)
@@ -146,7 +147,9 @@ class Board:
         self.castle_block_group.draw(screen)
 
     def createfireball(self):  # Creating fireballs
-        self.fireballs += [fireball.Fireball("images/fireball.png", "images/fireball.png", (30, 80), self.FIREBALL_WIDTH,self.FIREBALL_HEIGHT, randint(1, 2))]
+        donkeyx,donkey=self.donkey.getPosition()
+        self.fireballs += [fireball.Fireball("images/fireball.png", "images/fireball.png", (donkeyx+5, 80),
+                                             self.FIREBALL_WIDTH,self.FIREBALL_HEIGHT, randint(1, 2))]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
 
     def key_pressed(self, event):  # Handling a key pressed event
@@ -180,10 +183,11 @@ class Board:
         self.block_group.draw(screen)
         self.castle_block_group.draw(screen)
         self.ladder_group.draw(screen)
+        screen.blit(self.donkey.image,self.donkey.getPosition())
         self.fireball_group.draw(screen)
-        self.donkey_group.draw(screen)
         self.princess_group.draw(screen)
         self.plr_group.draw(screen)
+
 
 
     def getLadderCollisions(self):  # Check if player is in touch with any ladder
@@ -299,7 +303,7 @@ class Board:
                 self.plr[0].setPosition((x,y))
                 break
 
-    def updatefireballs(self,flipdonkey):  #Update fireball positions
+    def updatefireballs(self):  #Update fireball positions
         i=0
         for s in self.fireball_group.sprites():
             x, y = s.getPosition()
@@ -342,7 +346,18 @@ class Board:
                 i += 1
         del self.fireballs[i:]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
+
+    def updatedonkey(self,flipdonkey,screen):
         self.donkey.setState(self.donkey.getState()^flipdonkey)
+        direction = self.donkey.getdirection()
+        x,y = self.donkey.getPosition()
+        if x>=180: direction = 1
+        if x<=0: direction =0
+        if direction == 0:x+=self.DONKEY_SPEED
+        else: x-= self.DONKEY_SPEED
+        self.donkey.setdirection(direction)
+        self.donkey.setPosition((x,y))
+        self.donkey_group=pygame.sprite.RenderPlain(self.donkey)
 
     def getPlayerScore(self):
         return self.plr[0].getScore()
@@ -378,3 +393,12 @@ class Board:
     def killfireballs(self):
         self.fireballs=[]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
+
+    def upgradeplayerlevel(self):
+        self.plr[0].upgradelevel()
+
+    def getplayerlevel(self):
+        return self.plr[0].getlevel()
+
+    def boostfireball(self):
+        self.FIREBALL_SPEED+=2

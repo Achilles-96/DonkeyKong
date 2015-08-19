@@ -22,5 +22,12 @@ class ScoreBoard(pygame.sprite.Sprite):
     def update_lives(self,screen,lives):
 
         for i in range(lives):
-            self.life_image = pygame.transform.scale(self.life_image,(30,60))
-            screen.blit(self.life_image,(600+i*40,540))
+            self.life_image = pygame.transform.scale(self.life_image,(25,50))
+            screen.blit(self.life_image,(620+i*35,545))
+
+    def update_level(self,level,screen):
+       font = pygame.font.SysFont("comicsansms", 70)
+       text = font.render(str(level), True, (218,165,32))
+       text = pygame.transform.scale(text,(20,30))
+       screen.blit(text,(500+100 -(text.get_width()/2),530+20-(text.get_height()/2)))
+

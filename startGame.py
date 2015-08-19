@@ -25,7 +25,7 @@ class Game:
         self.screen.blit(self.background, self.background.get_rect())
         pygame.mixer.init()
         pygame.mixer.music.load("GameMusic.mp3")
-        pygame.mixer.music.play()
+        #pygame.mixer.music.play()
         pygame.display.flip()
 
     def run(self):
@@ -85,12 +85,13 @@ class Game:
                 if self.confirmquit() == 1:
                     return -1
 
+            board1.updatefireballs()
             donkeytimer += 1
             if donkeytimer == 10:
                 donkeytimer = 0
-                board1.updatefireballs(1)
+                board1.updatedonkey(1,self.screen)
             else:
-                board1.updatefireballs(0)
+                board1.updatedonkey(0,self.screen)
             if stateup == 1 and ladderstate == 1:
                 board1.key_pressed(3)
                 dead = board1.checkfireballcollision(1)
@@ -217,14 +218,16 @@ class Game:
                 collectCoin = 10
                 lower,upper= fireballfrequency
                 fireballfrequency=(lower-20,upper-20)
-                board1.FIREBALL_SPEED+=2
+                board1.boostfireball()
                 board1.killfireballs()
+                board1.upgradeplayerlevel()
 
             self.screen.blit(self.background, self.background.get_rect())
             board1.update(self.screen)
             board1.setPlayerScore(max(0,prevScore+collectCoin*5-fireballhitme*25))
             scoreboard1.update(board1.getPlayerScore(),self.screen)
             scoreboard1.update_lives(self.screen,board1.getPlayerLives())
+            scoreboard1.update_level(board1.getplayerlevel(),self.screen)
             pygame.display.flip()
 
     def confirmquit(self):

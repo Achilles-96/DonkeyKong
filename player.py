@@ -13,6 +13,7 @@ class Player(person.PersonSprite):
         self.image_straight =pygame.transform.scale(self.image_straight, (width, height))
         self.image_climb = pygame.image.load(image_climb)
         self.image_climb =pygame.transform.scale(self.image_climb, (width, height))
+        self.level = 1
 
 
     def getPosition(self):
@@ -48,3 +49,9 @@ class Player(person.PersonSprite):
 
     def getScore(self):
         return self.score
+
+    def upgradelevel(self):
+        self.level += 1
+
+    def getlevel(self):
+        return self.level
