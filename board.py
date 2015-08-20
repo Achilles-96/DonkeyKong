@@ -191,7 +191,7 @@ class Board:
         y = min(y, self.PLAYER_SPAWN_LEVEL)
         self.plr[0].setPosition((x, y))
 
-    def checkMidAir(self):   # Detecting that player should drop beyond block limits
+    def checkMidAir(self):  # Detecting that player should drop beyond block limits
         x, y = self.plr[0].getPosition()
         if y == 80 and x > 700:
             y += 0.1 * self.PLAYER_SPEED
@@ -200,7 +200,6 @@ class Board:
         if y in self.levellimits and int(self.levellimits[y]) == 2 and x < 170:
             y += 0.1 * self.PLAYER_SPEED
         self.plr[0].setPosition((x, y))
-
 
     def update(self, screen):  # Update the board
         self.coin_group.draw(screen)
@@ -305,8 +304,8 @@ class Board:
         x, y = self.plr[0].getPosition()
         levelpos = y
         if self.PLAYER_DROP_LEVEL:
-            if min(levelpos,self.PLAYER_DROP_LEVEL) == self.PLAYER_DROP_LEVEL:
-                levelpos=min(levelpos,self.PLAYER_DROP_LEVEL)
+            if min(levelpos, self.PLAYER_DROP_LEVEL) == self.PLAYER_DROP_LEVEL:
+                levelpos = min(levelpos, self.PLAYER_DROP_LEVEL)
                 self.PLAYER_DROP_LEVEL = None
         levelpos = self.playerparentdict[levelpos]
 
