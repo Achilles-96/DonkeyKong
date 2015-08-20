@@ -18,13 +18,6 @@ class Donkey(person.PersonSprite):
         else:
             self.image =self.right
 
-    def setPosition(self,position):
-        self.position = position
-        pygame.Rect(self.image.get_rect()).topleft = position
-
-    def getPosition(self):
-        return self.position
-
     def getdirection(self):
         return self.direction
 

@@ -25,7 +25,7 @@ class Game:
         self.screen.blit(self.background, self.background.get_rect())
         pygame.mixer.init()
         pygame.mixer.music.load("GameMusic.mp3")
-        #pygame.mixer.music.play()
+        pygame.mixer.music.play()
         pygame.display.flip()
 
     def run(self):

@@ -16,13 +16,6 @@ class Player(person.PersonSprite):
         self.level = 1
 
 
-    def getPosition(self):
-        return self.position
-
-    def setPosition(self,position):
-        self.position = position
-        pygame.Rect(self.image.get_rect()).topleft = position
-
     def setState(self,state):
         self.state=state
         if state == 0:

@@ -15,3 +15,10 @@ class GameObject(pygame.sprite.Sprite):
 
     def hit(self):
         self.image = self.hit
+
+    def getPosition(self):
+        return self.position
+
+    def setPosition(self,position):
+        self.position = position
+        pygame.Rect(self.image.get_rect()).topleft = position

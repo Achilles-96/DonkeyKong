@@ -109,10 +109,10 @@ class Board:
         for l in self.ladders:
             x,y = l.getPosition()
             w,h = l.getSize()
-            if h == 95:
+            if h == self.FULL_LADDER_HEIGHT:
                 self.ladderlimits[l.getPosition()] = y + 1 +60
             else:
-                if h == 60:
+                if h == ((self.FULL_LADDER_HEIGHT-5)*2)/3:
                     self.ladderlimits[l.getPosition()]= y+ 5+30
                 elif y % 10 == 0:
                     self.ladderlimits[l.getPosition()]  = y
@@ -168,7 +168,7 @@ class Board:
         y = max(y, 0)
         x = min(x, 1170)
         y = min(y, self.PLAYER_SPAWN_LEVEL)
-        #Detecting that palyer should drop beyond block limits
+        #Detecting that player should drop beyond block limits
         if y == 80 and x>700 :
             y+=0.1*self.PLAYER_SPEED
         if (y in self.levellimits and int(self.levellimits[y]) == 1 and x > 1000):

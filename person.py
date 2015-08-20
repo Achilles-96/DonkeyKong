@@ -25,3 +25,11 @@ class PersonSprite(pygame.sprite.Sprite):
 
     def personhit(self):
         self.image = self.hit
+
+
+    def setPosition(self,position):
+        self.position = position
+        pygame.Rect(self.image.get_rect()).topleft = position
+
+    def getPosition(self):
+        return self.position
