@@ -55,7 +55,7 @@ class Board:
         self.initdonkey(screen)
         self.initprincess(screen)
         self.initcastle(screen)
-        self.plr = [player.Player("images/player2.png", "images/player.png", "images/player3.png", "images/player4.png",
+        self.plr = [player.Player("Images/player2.png", "Images/player.png", "Images/player3.png", "Images/player4.png",
                                   (0, self.PLAYER_SPAWN_LEVEL), self.PLAYER_WIDTH, self.PLAYER_HEIGHT, 0, 2)]
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
         self.plr_group.draw(screen)
@@ -76,52 +76,52 @@ class Board:
 
     def initlogs(self, screen):  # Initialize all blocks
         self.levellimits = {400: 1, 320: 2, 240: 1, 160: 2, 80: 1, 30: 3}
-        self.blocks = [block.Block("images/log.png", "images/log.png", (0, 0), 1200, 20),
-                       block.Block("images/log.png", "images/log.png", (0, 100), 700, 20),
-                       block.Block("images/log.png", "images/log.png", (200, 180), 1000, 20),
-                       block.Block("images/log.png", "images/log.png", (0, 260), 1000, 20),
-                       block.Block("images/log.png", "images/log.png", (200, 340), 1000, 20),
-                       block.Block("images/log.png", "images/log.png", (0, 420), 1000, 20),
-                       block.Block("images/log.png", "images/log.png", (0, 500), 1200, 20),
+        self.blocks = [block.Block("Images/log.png", "Images/log.png", (0, 0), 1200, 20),
+                       block.Block("Images/log.png", "Images/log.png", (0, 100), 700, 20),
+                       block.Block("Images/log.png", "Images/log.png", (200, 180), 1000, 20),
+                       block.Block("Images/log.png", "Images/log.png", (0, 260), 1000, 20),
+                       block.Block("Images/log.png", "Images/log.png", (200, 340), 1000, 20),
+                       block.Block("Images/log.png", "Images/log.png", (0, 420), 1000, 20),
+                       block.Block("Images/log.png", "Images/log.png", (0, 500), 1200, 20),
                        ]
         self.block_group = pygame.sprite.RenderPlain(*self.blocks)
         self.block_group.draw(screen)
 
     def initdonkey(self, screen):  # Initialize donkey
-        self.donkey = donkey.Donkey("images/Donkey2.png", "images/Donkey.png", (20, 50), 40, 50, 0)
+        self.donkey = donkey.Donkey("Images/Donkey2.png", "Images/Donkey.png", (20, 50), 40, 50, 0)
         self.donkey_group = pygame.sprite.RenderPlain(self.donkey)
         self.donkey_group.draw(screen)
 
     def initprincess(self, screen):  # Initialize princess
-        self.princess = princess.Princess("images/princess2.png", "images/princess2.png", (120, 20), 20, 30, 0)
+        self.princess = princess.Princess("Images/princess2.png", "Images/princess2.png", (120, 20), 20, 30, 0)
         self.princess_group = pygame.sprite.RenderPlain(self.princess)
         self.princess_group.draw(screen)
 
     def initladders(self, screen):  # Initialize all ladders
 
-        self.ladders = [ladder.Ladder("images/ladder.png", "images/ladder.png", (800, 419), self.LADDER_WIDTH,
+        self.ladders = [ladder.Ladder("Images/ladder.png", "Images/ladder.png", (800, 419), self.LADDER_WIDTH,
                                       self.FULL_LADDER_HEIGHT),
-                        ladder.Ladder("images/ladder.png", "images/ladder.png", (300, 339), self.LADDER_WIDTH,
+                        ladder.Ladder("Images/ladder.png", "Images/ladder.png", (300, 339), self.LADDER_WIDTH,
                                       self.FULL_LADDER_HEIGHT),
-                        ladder.Ladder("images/ladder.png", "images/ladder.png", (500, 259), self.LADDER_WIDTH,
+                        ladder.Ladder("Images/ladder.png", "Images/ladder.png", (500, 259), self.LADDER_WIDTH,
                                       self.FULL_LADDER_HEIGHT),
-                        ladder.Ladder("images/ladder.png", "images/ladder.png", (900, 179), self.LADDER_WIDTH,
+                        ladder.Ladder("Images/ladder.png", "Images/ladder.png", (900, 179), self.LADDER_WIDTH,
                                       self.FULL_LADDER_HEIGHT),
-                        ladder.Ladder("images/ladder.png", "images/ladder.png", (600, 99), self.LADDER_WIDTH,
+                        ladder.Ladder("Images/ladder.png", "Images/ladder.png", (600, 99), self.LADDER_WIDTH,
                                       self.FULL_LADDER_HEIGHT),
-                        ladder.Ladder("images/ladder_broken.png", "images/ladder_broken.png", (650, 335),
+                        ladder.Ladder("Images/ladder_broken.png", "Images/ladder_broken.png", (650, 335),
                                       self.LADDER_WIDTH, self.HALF_LADDER_HEIGHT),
-                        ladder.Ladder("images/ladder_broken_down.png", "images/ladder_broken_down.png", (650, 400),
+                        ladder.Ladder("Images/ladder_broken_down.png", "Images/ladder_broken_down.png", (650, 400),
                                       self.LADDER_WIDTH, self.HALF_LADDER_HEIGHT),
-                        ladder.Ladder("images/ladder_broken.png", "images/ladder_broken.png", (850, 255),
+                        ladder.Ladder("Images/ladder_broken.png", "Images/ladder_broken.png", (850, 255),
                                       self.LADDER_WIDTH, self.HALF_LADDER_HEIGHT),
-                        ladder.Ladder("images/ladder_broken_down.png", "images/ladder_broken_down.png", (850, 320),
+                        ladder.Ladder("Images/ladder_broken_down.png", "Images/ladder_broken_down.png", (850, 320),
                                       self.LADDER_WIDTH, self.HALF_LADDER_HEIGHT),
-                        ladder.Ladder("images/ladder_broken.png", "images/ladder_broken.png", (300, 95),
+                        ladder.Ladder("Images/ladder_broken.png", "Images/ladder_broken.png", (300, 95),
                                       self.LADDER_WIDTH, self.HALF_LADDER_HEIGHT),
-                        ladder.Ladder("images/ladder_broken_down.png", "images/ladder_broken_down.png", (300, 160),
+                        ladder.Ladder("Images/ladder_broken_down.png", "Images/ladder_broken_down.png", (300, 160),
                                       self.LADDER_WIDTH, self.HALF_LADDER_HEIGHT),
-                        ladder.Ladder("images/castleladder.png", "images/castleladder.png", (220, 45),
+                        ladder.Ladder("Images/castleladder.png", "Images/castleladder.png", (220, 45),
                                       self.LADDER_WIDTH, ((self.FULL_LADDER_HEIGHT - 5) * 2) / 3)
                         ]
 
@@ -154,22 +154,22 @@ class Board:
             elif y == 70:
                 x = random.randrange(350, 700, 30)
 
-            self.coins += [coin.Coin("images/coin.png", "images/coin.png", (x, y), self.COIN_WIDTH, self.COIN_HEIGHT)]
+            self.coins += [coin.Coin("Images/coin.png", "Images/coin.png", (x, y), self.COIN_WIDTH, self.COIN_HEIGHT)]
 
         self.coin_group = pygame.sprite.RenderPlain(*self.coins)
         self.coin_group.draw(screen)
 
     def initcastle(self, screen):
-        self.castleblocks = [block.Block("images/castle.png", "images/castle.png", (110, 50), 180, 10),
-                             block.Block("images/castlepillar.png", "images/castlepillar.png", (100, 20), 20, 40),
-                             block.Block("images/castlepillar.png", "images/castlepillar.png", (280, 20), 20, 40),
+        self.castleblocks = [block.Block("Images/castle.png", "Images/castle.png", (110, 50), 180, 10),
+                             block.Block("Images/castlepillar.png", "Images/castlepillar.png", (100, 20), 20, 40),
+                             block.Block("Images/castlepillar.png", "Images/castlepillar.png", (280, 20), 20, 40),
                              ]
         self.castle_block_group = pygame.sprite.RenderPlain(*self.castleblocks)
         self.castle_block_group.draw(screen)
 
     def createfireball(self):  # Creating fireballs
         donkeyx, donkeyy = self.donkey.getPosition()
-        self.fireballs += [fireball.Fireball("images/fireball.png", "images/fireball.png", (donkeyx + 5, 80),
+        self.fireballs += [fireball.Fireball("Images/fireball.png", "Images/fireball.png", (donkeyx + 5, 80),
                                              self.FIREBALL_WIDTH, self.FIREBALL_HEIGHT, randint(1, 2))]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
 
@@ -367,7 +367,7 @@ class Board:
                     y = min(self.fireballparentdict[y], y + 2 * self.FIREBALL_SPEED)
                     if self.fireballparentdict[y] == y:
                         state = randint(0, 1)
-                self.fireballs[i] = fireball.Fireball("images/fireball.png", "images/fireball.png", (x, y),
+                self.fireballs[i] = fireball.Fireball("Images/fireball.png", "Images/fireball.png", (x, y),
                                                       self.FIREBALL_WIDTH, self.FIREBALL_HEIGHT, state)
                 i += 1
         del self.fireballs[i:]

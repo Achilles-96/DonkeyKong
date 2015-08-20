@@ -25,7 +25,7 @@ class Game:
         self.restart = pygame.transform.scale(self.restart, (400, 60))
         self.screen.blit(self.background, self.background.get_rect())
         pygame.mixer.init()
-        pygame.mixer.music.load("GameMusic.mp3")
+        pygame.mixer.music.load("Sound/GameMusic.mp3")
         pygame.mixer.music.play()
         pygame.display.flip()
 
@@ -41,8 +41,8 @@ class Game:
         donkeytimer = 0
         fireballfrequency = (60, 80)
         lim = randint(fireballfrequency[0], fireballfrequency[1])
-        scoreboard1 = scoreboard.ScoreBoard("images/scoreboard.png", board1.getPlayerScore(), self.screen,
-                                            "images/liveplayer.png")
+        scoreboard1 = scoreboard.ScoreBoard("Images/scoreboard.png", board1.getPlayerScore(), self.screen,
+                                            "Images/liveplayer.png")
         while 1:
             quitstate = 0
             fireballhitme = 0
@@ -263,8 +263,8 @@ class Game:
 
 if __name__ == '__main__':
     while 1:
-        game = Game('images/background.jpg', 'images/areyousure.png', 'images/yes.png', 'images/no.png',
-                    'images/restart.png')
+        game = Game('Images/background.jpg', 'Images/areyousure.png', 'Images/yes.png', 'Images/no.png',
+                    'Images/restart.png')
         status = game.run()  # Launch a new game
         if status == -1:
             break
