@@ -214,6 +214,8 @@ class Game:
                     fireballhitme = 1
                     jumpstate = 0
 
+            board1.checkMidAir()
+
             if board1.checkwin() == 1:
                 board1.respawnPlayer()
                 board1.initcoins(self.screen)

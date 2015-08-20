@@ -42,6 +42,7 @@ class Board:
         self.JUMP_LIMIT = 30
         self.PLAYER_SPAWN_LEVEL = 480
         self.DONKEY_SPEED = 3
+        self.PLAYER_DROP_LEVEL = None
         # End defining constants
         self.block_group = pygame.sprite.RenderPlain(*self.blocks)
         self.ladder_group = pygame.sprite.RenderPlain(*self.ladders)
@@ -188,7 +189,10 @@ class Board:
         y = max(y, 0)
         x = min(x, 1170)
         y = min(y, self.PLAYER_SPAWN_LEVEL)
-        # Detecting that player should drop beyond block limits
+        self.plr[0].setPosition((x, y))
+
+    def checkMidAir(self):   # Detecting that player should drop beyond block limits
+        x, y = self.plr[0].getPosition()
         if y == 80 and x > 700:
             y += 0.1 * self.PLAYER_SPEED
         if y in self.levellimits and int(self.levellimits[y]) == 1 and x > 1000:
@@ -196,6 +200,7 @@ class Board:
         if y in self.levellimits and int(self.levellimits[y]) == 2 and x < 170:
             y += 0.1 * self.PLAYER_SPEED
         self.plr[0].setPosition((x, y))
+
 
     def update(self, screen):  # Update the board
         self.coin_group.draw(screen)
@@ -287,6 +292,8 @@ class Board:
         levelpos = min(self.PLAYER_SPAWN_LEVEL, levelpos)
         levelpos = self.playerparentdict[levelpos]
 
+        if y == levelpos:
+            self.PLAYER_DROP_LEVEL = y
         if y <= levelpos - self.JUMP_LIMIT:
             self.plr[0].setPosition((x, levelpos - self.JUMP_LIMIT))
             return 1
@@ -297,7 +304,10 @@ class Board:
     def playerjumpdown(self, jumpspeed):  # Jumping down function
         x, y = self.plr[0].getPosition()
         levelpos = y
-        levelpos = min(self.PLAYER_SPAWN_LEVEL, levelpos)
+        if self.PLAYER_DROP_LEVEL:
+            if min(levelpos,self.PLAYER_DROP_LEVEL) == self.PLAYER_DROP_LEVEL:
+                levelpos=min(levelpos,self.PLAYER_DROP_LEVEL)
+                self.PLAYER_DROP_LEVEL = None
         levelpos = self.playerparentdict[levelpos]
 
         if y >= levelpos:
