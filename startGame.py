@@ -215,7 +215,7 @@ class Game:
                 board1.setplayerlives()
                 collectCoin = 10
                 lower, upper = fireballfrequency
-                fireballfrequency = (min(0,lower - 20), min(0,upper - 20))
+                fireballfrequency = (max(0,lower - 20),max(0, upper - 20))
                 board1.boostfireball()
                 board1.killfireballs()
                 board1.upgradeplayerlevel()
