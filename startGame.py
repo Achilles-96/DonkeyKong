@@ -1,15 +1,16 @@
 __author__ = 'raghuram'
 import pygame
-import board
 from pygame.locals import *
 from random import randint
+
+import board
 import scoreboard
 
 
 class Game:
-    def __init__(self, background,quitimage,yes_image,no_image,restart_image):
+    def __init__(self, background, quitimage, yes_image, no_image, restart_image):
         pygame.font.init()
-        self.screen = pygame.display.set_mode((1200, 620),DOUBLEBUF)
+        self.screen = pygame.display.set_mode((1200, 620), DOUBLEBUF)
         self.screen.set_alpha(None)
         self.clock = pygame.time.Clock()
         self.background = pygame.image.load(background)
@@ -38,17 +39,18 @@ class Game:
         timer = 0
         jumpspeed = 0
         donkeytimer = 0
-        fireballfrequency = (60,80)
-        lim = randint(fireballfrequency[0],fireballfrequency[1])
-        scoreboard1 = scoreboard.ScoreBoard("images/scoreboard.png",board1.getPlayerScore(),self.screen,"images/liveplayer.png")
+        fireballfrequency = (60, 80)
+        lim = randint(fireballfrequency[0], fireballfrequency[1])
+        scoreboard1 = scoreboard.ScoreBoard("images/scoreboard.png", board1.getPlayerScore(), self.screen,
+                                            "images/liveplayer.png")
         while 1:
             quitstate = 0
-            fireballhitme =0
+            fireballhitme = 0
             self.screen.set_alpha(None)
             if timer == lim:
                 board1.createfireball()
                 timer = 0
-                lim = randint(fireballfrequency[0],fireballfrequency[1])
+                lim = randint(fireballfrequency[0], fireballfrequency[1])
             timer += 1
             prevScore = board1.getPlayerScore()
             ladderstate = board1.getLadderCollisions()
@@ -58,7 +60,8 @@ class Game:
             for ev in pygame.event.get():
                 if ev.type == QUIT:
                     quitstate = 1
-                if not hasattr(ev, 'key'): continue
+                if not hasattr(ev, 'key'):
+                    continue
                 if ev.type == KEYDOWN and ev.key == K_RIGHT:
                     stateright = 1
                 if ev.type == KEYUP and ev.key == K_RIGHT:
@@ -89,15 +92,15 @@ class Game:
             donkeytimer += 1
             if donkeytimer == 10:
                 donkeytimer = 0
-                board1.updatedonkey(1,self.screen)
+                board1.updatedonkey(1)
             else:
-                board1.updatedonkey(0,self.screen)
+                board1.updatedonkey(0)
             if stateup == 1 and ladderstate == 1:
                 board1.key_pressed(3)
-                dead = board1.checkfireballcollision(1)
+                dead = board1.checkfireballcollision()
                 if dead == 0:
                     pygame.display.flip()
-                    if self.askforrestart(prevScore) == 1:
+                    if self.askforrestart() == 1:
                         return -1
                     else:
                         return 0
@@ -107,10 +110,10 @@ class Game:
 
             if statedown == 1 and ladderstate == 1:
                 board1.key_pressed(4)
-                dead = board1.checkfireballcollision(2)
+                dead = board1.checkfireballcollision()
                 if dead == 0:
                     pygame.display.flip()
-                    if self.askforrestart(prevScore) == 1:
+                    if self.askforrestart() == 1:
                         return -1
                     else:
                         return 0
@@ -120,10 +123,10 @@ class Game:
 
             if ladderstate == 1:
                 board1.checkplayerlevel()
-                dead = board1.checkfireballcollision(3)
+                dead = board1.checkfireballcollision()
                 if dead == 0:
                     pygame.display.flip()
-                    if self.askforrestart(prevScore) == 1:
+                    if self.askforrestart() == 1:
                         return -1
                     else:
                         return 0
@@ -133,10 +136,10 @@ class Game:
 
             if stateright == 1:
                 board1.key_pressed(1)
-                dead = board1.checkfireballcollision(4)
+                dead = board1.checkfireballcollision()
                 if dead == 0:
                     pygame.display.flip()
-                    if self.askforrestart(prevScore) == 1:
+                    if self.askforrestart() == 1:
                         return -1
                     else:
                         return 0
@@ -146,10 +149,10 @@ class Game:
 
             if stateleft == 1:
                 board1.key_pressed(2)
-                dead = board1.checkfireballcollision(5)
+                dead = board1.checkfireballcollision()
                 if dead == 0:
                     pygame.display.flip()
-                    if self.askforrestart(prevScore) == 1:
+                    if self.askforrestart() == 1:
                         return -1
                     else:
                         return 0
@@ -160,7 +163,8 @@ class Game:
             if stateright == 0 and stateleft == 0 and ladderstate == 0:
                 board1.setPlayerstraight()
 
-            if ladderstate == 1 and jumpstate == 1: jumpstate = 0
+            if ladderstate == 1 and jumpstate == 1:
+                jumpstate = 0
             if jumpstate == 1:
                 if board1.playerjump(jumpspeed) == 1:
                     jumpstate = 2
@@ -168,10 +172,10 @@ class Game:
                 else:
                     jumpspeed -= 2
 
-                dead = board1.checkfireballcollision(6)
+                dead = board1.checkfireballcollision()
                 if dead == 0:
                     pygame.display.flip()
-                    if self.askforrestart(prevScore) == 1:
+                    if self.askforrestart() == 1:
                         return -1
                     else:
                         return 0
@@ -186,23 +190,23 @@ class Game:
                 else:
                     jumpspeed += 2
 
-                dead = board1.checkfireballcollision(7)
+                dead = board1.checkfireballcollision()
                 if dead == 0:
                     pygame.display.flip()
-                    if self.askforrestart(prevScore) == 1:
+                    if self.askforrestart() == 1:
                         return -1
                     else:
                         return 0
                 elif dead == 1:
                     fireballhitme = 1
-                    jumpstate =0
+                    jumpstate = 0
 
             if ladderstate == 0 and jumpstate == 0:
                 board1.dropplayer()
-                dead = board1.checkfireballcollision(8)
+                dead = board1.checkfireballcollision()
                 if dead == 0:
                     pygame.display.flip()
-                    if self.askforrestart(prevScore) == 1:
+                    if self.askforrestart() == 1:
                         return -1
                     else:
                         return 0
@@ -216,25 +220,25 @@ class Game:
                 board1.setplayerlives()
                 board1.setplayerlives()
                 collectCoin = 10
-                lower,upper= fireballfrequency
-                fireballfrequency=(lower-20,upper-20)
+                lower, upper = fireballfrequency
+                fireballfrequency = (lower - 20, upper - 20)
                 board1.boostfireball()
                 board1.killfireballs()
                 board1.upgradeplayerlevel()
 
             self.screen.blit(self.background, self.background.get_rect())
             board1.update(self.screen)
-            board1.setPlayerScore(max(0,prevScore+collectCoin*5-fireballhitme*25))
-            scoreboard1.update(board1.getPlayerScore(),self.screen)
-            scoreboard1.update_lives(self.screen,board1.getPlayerLives())
-            scoreboard1.update_level(board1.getplayerlevel(),self.screen)
+            board1.setPlayerScore(max(0, prevScore + collectCoin * 5 - fireballhitme * 25))
+            scoreboard1.update(board1.getPlayerScore(), self.screen)
+            scoreboard1.update_lives(self.screen, board1.getPlayerLives())
+            scoreboard1.update_level(board1.getplayerlevel(), self.screen)
             pygame.display.flip()
 
     def confirmquit(self):
         while 1:
-            self.screen.blit(self.quitimage,(400,200))
-            yes = self.screen.blit(self.yesimage,(500,300))
-            no = self.screen.blit(self.noimage,(650,300))
+            self.screen.blit(self.quitimage, (400, 200))
+            yes = self.screen.blit(self.yesimage, (500, 300))
+            no = self.screen.blit(self.noimage, (650, 300))
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
@@ -244,11 +248,11 @@ class Game:
                         return 0
             pygame.display.flip()
 
-    def askforrestart(self,score):
+    def askforrestart(self):
         while 1:
-            self.screen.blit(self.restart,(400,200))
-            yes = self.screen.blit(self.yesimage,(500,300))
-            no = self.screen.blit(self.noimage,(650,300))
+            self.screen.blit(self.restart, (400, 200))
+            yes = self.screen.blit(self.yesimage, (500, 300))
+            no = self.screen.blit(self.noimage, (650, 300))
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
@@ -261,7 +265,8 @@ class Game:
 
 if __name__ == '__main__':
     while 1:
-        game = Game('images/background.jpg','images/areyousure.png','images/yes.png','images/no.png','images/restart.png')
+        game = Game('images/background.jpg', 'images/areyousure.png', 'images/yes.png', 'images/no.png',
+                    'images/restart.png')
         status = game.run()
         if status == -1:
             break

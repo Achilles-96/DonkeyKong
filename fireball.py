@@ -1,6 +1,5 @@
 __author__ = 'raghuram'
 import gameobject
-import pygame
 
 
 class Fireball(gameobject.GameObject):
@@ -11,5 +10,5 @@ class Fireball(gameobject.GameObject):
     def getState(self):
         return self.state
 
-    def setState(self,state):
+    def setState(self, state):
         self.state = state

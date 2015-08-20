@@ -1,5 +1,5 @@
 __author__ = 'raghuram'
-import pygame, math, sys
+import pygame
 
 
 class GameObject(pygame.sprite.Sprite):
@@ -19,6 +19,6 @@ class GameObject(pygame.sprite.Sprite):
     def getPosition(self):
         return self.position
 
-    def setPosition(self,position):
+    def setPosition(self, position):
         self.position = position
         pygame.Rect(self.image.get_rect()).topleft = position
