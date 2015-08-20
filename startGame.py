@@ -62,21 +62,21 @@ class Game:
                     quitstate = 1
                 if not hasattr(ev, 'key'):
                     continue
-                if ev.type == KEYDOWN and ev.key == K_RIGHT:
+                if ev.type == KEYDOWN and (ev.key == K_RIGHT or ev.key == K_d):
                     stateright = 1
-                if ev.type == KEYUP and ev.key == K_RIGHT:
+                if ev.type == KEYUP and (ev.key == K_RIGHT or ev.key == K_d):
                     stateright = 0
-                if ev.type == KEYDOWN and ev.key == K_LEFT:
+                if ev.type == KEYDOWN and (ev.key == K_LEFT or ev.key == K_a):
                     stateleft = 1
-                if ev.type == KEYUP and ev.key == K_LEFT:
+                if ev.type == KEYUP and (ev.key == K_LEFT or ev.key == K_a):
                     stateleft = 0
-                if ev.type == KEYDOWN and ev.key == K_UP:
+                if ev.type == KEYDOWN and (ev.key == K_UP or ev.key == K_w):
                     stateup = 1
-                if ev.type == KEYUP and ev.key == K_UP:
+                if ev.type == KEYUP and (ev.key == K_UP or ev.key == K_w):
                     stateup = 0
-                if ev.type == KEYDOWN and ev.key == K_DOWN:
+                if ev.type == KEYDOWN and (ev.key == K_DOWN or ev.key == K_s):
                     statedown = 1
-                if ev.type == KEYUP and ev.key == K_DOWN:
+                if ev.type == KEYUP and (ev.key == K_DOWN or ev.key == K_s):
                     statedown = 0
                 if ev.type == KEYDOWN and ev.key == K_SPACE and jumpstate == 0:
                     jumpstate = 1
@@ -215,7 +215,7 @@ class Game:
                 board1.setplayerlives()
                 collectCoin = 10
                 lower, upper = fireballfrequency
-                fireballfrequency = (lower - 20, upper - 20)
+                fireballfrequency = (min(0,lower - 20), min(0,upper - 20))
                 board1.boostfireball()
                 board1.killfireballs()
                 board1.upgradeplayerlevel()

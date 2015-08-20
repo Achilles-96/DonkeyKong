@@ -373,7 +373,7 @@ class Board:
         del self.fireballs[i:]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
 
-    def updatedonkey(self, flipdonkey):  #Update donkey position and direction
+    def updatedonkey(self, flipdonkey):  # Update donkey position and direction
         self.donkey.setState(self.donkey.getState() ^ flipdonkey)
         direction = self.donkey.getdirection()
         x, y = self.donkey.getPosition()
@@ -411,10 +411,10 @@ class Board:
                     return 1
         return 0
 
-    def setPlayerstraight(self): # Set player straight when not moving
+    def setPlayerstraight(self):  # Set player straight when not moving
         self.plr[0].setState(3)
 
-    def respawnPlayer(self): # Respawn player at left bottom
+    def respawnPlayer(self):  # Respawn player at left bottom
         self.killfireballs()
         self.plr[0].setPosition((0, self.PLAYER_SPAWN_LEVEL))
 
@@ -431,5 +431,5 @@ class Board:
     def getplayerlevel(self):
         return self.plr[0].getlevel()
 
-    def boostfireball(self): # Increase speed of fireball
+    def boostfireball(self):  # Increase speed of fireball
         self.FIREBALL_SPEED += 2
