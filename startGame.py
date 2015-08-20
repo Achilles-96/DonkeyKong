@@ -99,7 +99,7 @@ class Game:
                 board1.key_pressed(3)
                 dead = board1.checkfireballcollision()
                 if dead == 0:
-                    if self.askforrestart(board1) == 1:
+                    if self.askforrestart(board1, scoreboard1) == 1:
                         return -1
                     else:
                         return 0
@@ -111,7 +111,7 @@ class Game:
                 board1.key_pressed(4)
                 dead = board1.checkfireballcollision()
                 if dead == 0:
-                    if self.askforrestart(board1) == 1:
+                    if self.askforrestart(board1, scoreboard1) == 1:
                         return -1
                     else:
                         return 0
@@ -123,7 +123,7 @@ class Game:
                 board1.checkplayerlevel()
                 dead = board1.checkfireballcollision()
                 if dead == 0:
-                    if self.askforrestart(board1) == 1:
+                    if self.askforrestart(board1, scoreboard1) == 1:
                         return -1
                     else:
                         return 0
@@ -135,7 +135,7 @@ class Game:
                 board1.key_pressed(1)
                 dead = board1.checkfireballcollision()
                 if dead == 0:
-                    if self.askforrestart(board1) == 1:
+                    if self.askforrestart(board1, scoreboard1) == 1:
                         return -1
                     else:
                         return 0
@@ -147,7 +147,7 @@ class Game:
                 board1.key_pressed(2)
                 dead = board1.checkfireballcollision()
                 if dead == 0:
-                    if self.askforrestart(board1) == 1:
+                    if self.askforrestart(board1, scoreboard1) == 1:
                         return -1
                     else:
                         return 0
@@ -169,7 +169,7 @@ class Game:
 
                 dead = board1.checkfireballcollision()
                 if dead == 0:
-                    if self.askforrestart(board1) == 1:
+                    if self.askforrestart(board1, scoreboard1) == 1:
                         return -1
                     else:
                         return 0
@@ -186,7 +186,7 @@ class Game:
 
                 dead = board1.checkfireballcollision()
                 if dead == 0:
-                    if self.askforrestart(board1) == 1:
+                    if self.askforrestart(board1, scoreboard1) == 1:
                         return -1
                     else:
                         return 0
@@ -198,7 +198,7 @@ class Game:
                 board1.dropplayer()
                 dead = board1.checkfireballcollision()
                 if dead == 0:
-                    if self.askforrestart(board1) == 1:
+                    if self.askforrestart(board1, scoreboard1) == 1:
                         return -1
                     else:
                         return 0
@@ -242,8 +242,9 @@ class Game:
                         return 0
             pygame.display.flip()
 
-    def askforrestart(self,board1):  # Ask if player wants to restart
+    def askforrestart(self, board1, scoreboard1):  # Ask if player wants to restart
         self.screen.blit(self.background, self.background.get_rect())
+        scoreboard1.update(board1.getPlayerScore(), self.screen)
         board1.update(self.screen)
         pygame.display.flip()
         while 1:
@@ -264,6 +265,6 @@ if __name__ == '__main__':
     while 1:
         game = Game('images/background.jpg', 'images/areyousure.png', 'images/yes.png', 'images/no.png',
                     'images/restart.png')
-        status = game.run() # Launch a new game
+        status = game.run()  # Launch a new game
         if status == -1:
             break
