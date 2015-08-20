@@ -250,8 +250,6 @@ class Board:
             rect2.height = self.FIREBALL_HEIGHT
             rect2.width = self.FIREBALL_WIDTH
             if rect1.colliderect(rect2):
-                self.fireballs = []
-                self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
                 if self.plr[0].getLives() == 0:
                     return 0
                 else:
@@ -329,7 +327,7 @@ class Board:
                 self.plr[0].setPosition((x, y))
                 break
 
-    def updatefireballs(self):  # Update fireball positions
+    def updatefireballs(self):  # Update fireball positions and directions
         i = 0
         for s in self.fireball_group.sprites():
             x, y = s.getPosition()
@@ -375,7 +373,7 @@ class Board:
         del self.fireballs[i:]
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
 
-    def updatedonkey(self, flipdonkey):
+    def updatedonkey(self, flipdonkey):  #Update donkey position and direction
         self.donkey.setState(self.donkey.getState() ^ flipdonkey)
         direction = self.donkey.getdirection()
         x, y = self.donkey.getPosition()
@@ -400,7 +398,7 @@ class Board:
     def getPlayerLives(self):
         return self.plr[0].getLives()
 
-    def checkwin(self):
+    def checkwin(self):   # check if player reached destination
         x, y = self.plr[0].getPosition()
         if y <= 35:
             for b in self.castle_block_group.sprites():
@@ -413,16 +411,17 @@ class Board:
                     return 1
         return 0
 
-    def setPlayerstraight(self):
+    def setPlayerstraight(self): # Set player straight when not moving
         self.plr[0].setState(3)
 
-    def respawnPlayer(self):
+    def respawnPlayer(self): # Respawn player at left bottom
+        self.killfireballs()
         self.plr[0].setPosition((0, self.PLAYER_SPAWN_LEVEL))
 
     def setplayerlives(self):
         self.plr[0].setLives(2)
 
-    def killfireballs(self):
+    def killfireballs(self):  # Kill all fireballs
         self.fireballs = []
         self.fireball_group = pygame.sprite.RenderPlain(*self.fireballs)
 
@@ -432,5 +431,5 @@ class Board:
     def getplayerlevel(self):
         return self.plr[0].getlevel()
 
-    def boostfireball(self):
+    def boostfireball(self): # Increase speed of fireball
         self.FIREBALL_SPEED += 2
