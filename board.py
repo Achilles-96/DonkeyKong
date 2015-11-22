@@ -13,7 +13,8 @@ import ladder
 
 
 class Board:
-    def __init__(self, screen):
+    def __init__(self, screen, testmode):
+        self.MODE = testmode
         self.blocks = []
         self.ladders = []
         self.coins = []
@@ -58,7 +59,8 @@ class Board:
         self.plr = [player.Player("Images/player2.png", "Images/player.png", "Images/player3.png", "Images/player4.png",
                                   (0, self.PLAYER_SPAWN_LEVEL), self.PLAYER_WIDTH, self.PLAYER_HEIGHT, 0, 2)]
         self.plr_group = pygame.sprite.RenderPlain(*self.plr)
-        self.plr_group.draw(screen)
+        if(self.MODE == 1):
+            self.plr_group.draw(screen)
         self.playerparentdict = {}
         self.fireballparentdict = {}
         self.playerparentdict[500] = self.PLAYER_SPAWN_LEVEL
@@ -85,17 +87,20 @@ class Board:
                        block.Block("Images/log.png", "Images/log.png", (0, 500), 1200, 20),
                        ]
         self.block_group = pygame.sprite.RenderPlain(*self.blocks)
-        self.block_group.draw(screen)
+        if(self.MODE == 1):  #1 implies game mode , 0 implies test mode
+            self.block_group.draw(screen)
 
     def initdonkey(self, screen):  # Initialize donkey
         self.donkey = donkey.Donkey("Images/Donkey2.png", "Images/Donkey.png", (20, 50), 40, 50, 0)
         self.donkey_group = pygame.sprite.RenderPlain(self.donkey)
-        self.donkey_group.draw(screen)
+        if(self.MODE == 1):
+            self.donkey_group.draw(screen)
 
     def initprincess(self, screen):  # Initialize princess
         self.princess = princess.Princess("Images/princess2.png", "Images/princess2.png", (120, 20), 20, 30, 0)
         self.princess_group = pygame.sprite.RenderPlain(self.princess)
-        self.princess_group.draw(screen)
+        if(self.MODE == 1):
+            self.princess_group.draw(screen)
 
     def initladders(self, screen):  # Initialize all ladders
 
@@ -138,7 +143,8 @@ class Board:
                 else:
                     self.ladderlimits[l.getPosition()] = y + 5 + 60
         self.ladder_group = pygame.sprite.RenderPlain(*self.ladders)
-        self.ladder_group.draw(screen)
+        if(self.MODE == 1):
+            self.ladder_group.draw(screen)
 
     def initcoins(self, screen):  # Initialize all coins
         self.coins = []
@@ -157,7 +163,8 @@ class Board:
             self.coins += [coin.Coin("Images/coin.png", "Images/coin.png", (x, y), self.COIN_WIDTH, self.COIN_HEIGHT)]
 
         self.coin_group = pygame.sprite.RenderPlain(*self.coins)
-        self.coin_group.draw(screen)
+        if(self.MODE == 1):
+            self.coin_group.draw(screen)
 
     def initcastle(self, screen):
         self.castleblocks = [block.Block("Images/castle.png", "Images/castle.png", (110, 50), 180, 10),
@@ -165,7 +172,8 @@ class Board:
                              block.Block("Images/castlepillar.png", "Images/castlepillar.png", (280, 20), 20, 40),
                              ]
         self.castle_block_group = pygame.sprite.RenderPlain(*self.castleblocks)
-        self.castle_block_group.draw(screen)
+        if(self.MODE == 1):
+            self.castle_block_group.draw(screen)
 
     def createfireball(self):  # Creating fireballs
         donkeyx, donkeyy = self.donkey.getPosition()
@@ -202,14 +210,15 @@ class Board:
         self.plr[0].setPosition((x, y))
 
     def update(self, screen):  # Update the board
-        self.coin_group.draw(screen)
-        self.block_group.draw(screen)
-        self.castle_block_group.draw(screen)
-        self.ladder_group.draw(screen)
-        screen.blit(self.donkey.image, self.donkey.getPosition())
-        self.fireball_group.draw(screen)
-        self.princess_group.draw(screen)
-        self.plr_group.draw(screen)
+        if(self.MODE == 1):
+            self.coin_group.draw(screen)
+            self.block_group.draw(screen)
+            self.castle_block_group.draw(screen)
+            self.ladder_group.draw(screen)
+            screen.blit(self.donkey.image, self.donkey.getPosition())
+            self.fireball_group.draw(screen)
+            self.princess_group.draw(screen)
+            self.plr_group.draw(screen)
 
     def getLadderCollisions(self):  # Check if player is in touch with any ladder
 
@@ -385,6 +394,8 @@ class Board:
             x += self.DONKEY_SPEED
         else:
             x -= self.DONKEY_SPEED
+        x = min(x,180)
+        x = max(x,0)
         self.donkey.setdirection(direction)
         self.donkey.setPosition((x, y))
         self.donkey_group = pygame.sprite.RenderPlain(self.donkey)

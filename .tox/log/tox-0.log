@@ -1,0 +1,71 @@
+actionid: tox
+msg: packaging
+cmdargs: ['/usr/bin/python', local('/home/raghuram/PycharmProjects/DonkeyKong/setup.py'), 'sdist', '--formats=zip', '--dist-dir', local('/home/raghuram/PycharmProjects/DonkeyKong/.tox/dist')]
+env: None
+
+WARNING: '.' not a valid package name; please use only.-separated package names in setup.py
+running sdist
+running egg_info
+writing Donkey_Kong_Game.egg-info/PKG-INFO
+writing top-level names to Donkey_Kong_Game.egg-info/top_level.txt
+writing dependency_links to Donkey_Kong_Game.egg-info/dependency_links.txt
+package init file '__init__.py' not found (or not a regular file)
+reading manifest file 'Donkey_Kong_Game.egg-info/SOURCES.txt'
+writing manifest file 'Donkey_Kong_Game.egg-info/SOURCES.txt'
+running check
+warning: check: missing required meta-data: url
+
+warning: check: missing meta-data: either (author and author_email) or (maintainer and maintainer_email) must be supplied
+
+creating Donkey Kong Game-0.1
+creating Donkey Kong Game-0.1/Donkey_Kong_Game.egg-info
+making hard links in Donkey Kong Game-0.1...
+hard linking README -> Donkey Kong Game-0.1
+hard linking block.py -> Donkey Kong Game-0.1
+hard linking board.py -> Donkey Kong Game-0.1
+hard linking coin.py -> Donkey Kong Game-0.1
+hard linking donkey.py -> Donkey Kong Game-0.1
+hard linking fireball.py -> Donkey Kong Game-0.1
+hard linking gameobject.py -> Donkey Kong Game-0.1
+hard linking ladder.py -> Donkey Kong Game-0.1
+hard linking person.py -> Donkey Kong Game-0.1
+hard linking player.py -> Donkey Kong Game-0.1
+hard linking princess.py -> Donkey Kong Game-0.1
+hard linking scoreboard.py -> Donkey Kong Game-0.1
+hard linking setup.py -> Donkey Kong Game-0.1
+hard linking startGame.py -> Donkey Kong Game-0.1
+hard linking test_board.py -> Donkey Kong Game-0.1
+hard linking test_donkey.py -> Donkey Kong Game-0.1
+hard linking test_fireballs.py -> Donkey Kong Game-0.1
+hard linking test_person.py -> Donkey Kong Game-0.1
+hard linking Donkey_Kong_Game.egg-info/PKG-INFO -> Donkey Kong Game-0.1/Donkey_Kong_Game.egg-info
+hard linking Donkey_Kong_Game.egg-info/SOURCES.txt -> Donkey Kong Game-0.1/Donkey_Kong_Game.egg-info
+hard linking Donkey_Kong_Game.egg-info/dependency_links.txt -> Donkey Kong Game-0.1/Donkey_Kong_Game.egg-info
+hard linking Donkey_Kong_Game.egg-info/top_level.txt -> Donkey Kong Game-0.1/Donkey_Kong_Game.egg-info
+Writing Donkey Kong Game-0.1/setup.cfg
+creating '.tox/dist/Donkey Kong Game-0.1.zip' and adding 'Donkey Kong Game-0.1' to it
+adding 'Donkey Kong Game-0.1/test_donkey.py'
+adding 'Donkey Kong Game-0.1/gameobject.py'
+adding 'Donkey Kong Game-0.1/donkey.py'
+adding 'Donkey Kong Game-0.1/test_fireballs.py'
+adding 'Donkey Kong Game-0.1/block.py'
+adding 'Donkey Kong Game-0.1/PKG-INFO'
+adding 'Donkey Kong Game-0.1/princess.py'
+adding 'Donkey Kong Game-0.1/player.py'
+adding 'Donkey Kong Game-0.1/fireball.py'
+adding 'Donkey Kong Game-0.1/README'
+adding 'Donkey Kong Game-0.1/setup.py'
+adding 'Donkey Kong Game-0.1/test_person.py'
+adding 'Donkey Kong Game-0.1/coin.py'
+adding 'Donkey Kong Game-0.1/test_board.py'
+adding 'Donkey Kong Game-0.1/scoreboard.py'
+adding 'Donkey Kong Game-0.1/board.py'
+adding 'Donkey Kong Game-0.1/startGame.py'
+adding 'Donkey Kong Game-0.1/ladder.py'
+adding 'Donkey Kong Game-0.1/setup.cfg'
+adding 'Donkey Kong Game-0.1/person.py'
+adding 'Donkey Kong Game-0.1/Donkey_Kong_Game.egg-info/PKG-INFO'
+adding 'Donkey Kong Game-0.1/Donkey_Kong_Game.egg-info/top_level.txt'
+adding 'Donkey Kong Game-0.1/Donkey_Kong_Game.egg-info/dependency_links.txt'
+adding 'Donkey Kong Game-0.1/Donkey_Kong_Game.egg-info/SOURCES.txt'
+removing 'Donkey Kong Game-0.1' (and everything under it)

@@ -30,7 +30,7 @@ class Game:
         pygame.display.flip()
 
     def run(self):  # The function which runs the game
-        board1 = board.Board(self.screen)
+        board1 = board.Board(self.screen,1)
         stateright = 0
         stateleft = 0
         stateup = 0
