@@ -1,4 +1,0 @@
-This is a simple Donkeykong game made entirely in python using pygame.
-
-Command for tox : sudo tox
-Command for pytest : py.test
